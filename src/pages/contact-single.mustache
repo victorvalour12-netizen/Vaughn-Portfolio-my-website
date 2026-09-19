@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- Primary Meta Tags -->
+  <title> {{TITLE}} from Vaughn </title>
+  <meta name="title" content="{{TITLE}} | My Blog">
+  <meta name="description" content="{{CONTACT.blogContent}}">
+  <meta name="keywords" content="{{CONTACT.category}}, blog, {{CONTACT.blogName}}">
+  <meta name="author" content="Your Name">
+  <link rel="canonical" href="https://{{BASE_URL}}/blogs/{{CONTACT.blogId}}">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://{{BASE_URL}}/blogs/{{CONTACT.blogId}}">
+  <meta property="og:title" content="{{TITLE}}">
+  <meta property="og:description" content="{{CONTACT.blogContent}}">
+  <meta property="og:site_name" content="My Blog">
+  <meta property="article:published_time" content="{{CONTACT.date}}">
+  <meta property="article:section" content="{{CONTACT.category}}">
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://{{BASE_URL}}/blogs/{{CONTACT.blogId}}">
+  <meta property="twitter:title" content="{{TITLE}}">
+  <meta property="twitter:description" content="{{CONTACT.blogContent}}">
+
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+
+  {{> partials/nav}} <!-- if you have a nav partial -->
+
+  <main class="blog-page" style="margin-top: 150px;">
+    <article class="blog-single">
+          <div class='blog-nav'>
+        <a href="/" class="back-link">← Back to Home</a>
+        <span class="blog-category">{{CONTACT.category}}</span>
+        </div>
+      
+       <h2>Get In Touch</h2>
+    <p style="color: var(--text-muted); ;">Have a {{CONTACT.interest}} in mind? {{CONTACT.cta}}</p>
+
+    <form class="contact-form" onsubmit="sendToWhatsApp(event)">
+      <div class="form-group">
+        <label>{{CONTACT.client}}</label>
+        <input type="text" name="name" required>
+      </div>
+
+      <div class="form-group">
+        <label>Message</label>
+        <textarea name="message" rows="5" required placeholder="What Kind of device are you looking to get?"></textarea>
+      </div>
+
+      <button type="submit" class="btn">Send Message</button>
+    </form>
+    <div id="popup" class="popup hidden">✅ Message Sent! I'll reply on WhatsApp soon 🚀</div>
+
+  </section>
+    </article>
+
+    <section class="related-skills">
+      <h2>More from {{CONTACT.category}}</h2>
+      <div class="related-grid">
+        {{#RELATED}}
+          <a href="{{contactId}}" class="post-card">
+            <h3>{{contactType}}</h3>
+          </a>
+        {{/RELATED}}
+      </div>
+    </section>
+  </main>
+
+  {{> partials/footer}} <!-- if you have a footer partial -->
+
+
+
+</body>
+</html>
+

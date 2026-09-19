@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- Primary Meta Tags -->
+  <title> Courses by Vaughn | {{TITLE}} </title>
+  <meta name="title" content="{{TITLE}} | Vaughn Courses">
+  <meta name="description" content="{{COURSE.courseContent}}">
+  <meta name="keywords" content="{{COURSE.category}}, course, {{COURSE.courseName}}">
+  <meta name="author" content="Valour">
+  <link rel="canonical" href="https://{{BASE_URL}}/courses/{{COURSE.slug}}">
+
+<head>
+  <title>{{TITLE}} - Vaughn Courses</title>
+  
+  <!-- OG for WhatsApp/Facebook -->
+  <meta property="og:type" content="product">
+  <meta property="og:url" content="{{BASE_URL}}/courses/{{COURSE.slug}}">
+  <meta property="og:title" content="{{COURSE.courseName}} - ₦{{COURSE.price}}">
+  <meta property="og:description" content="{{COURSE.description}}">
+  <meta property="og:image" content="{{BASE_URL}}{{COURSE.courseImage}}">
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:title" content="{{TITLE}}">
+  <meta property="twitter:description" content="{{COURSE.description}}">
+  <meta property="twitter:image" content="{{BASE_URL}}{{COURSE.courseImage}}">
+</head>
+
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+
+{{> partials/nav}}
+
+<main class="blog-page" style="margin-top: 150px;">
+  <article class="blog-single">
+    <header class="blog-header">
+      <div class='blog-nav'>
+        <a href="/courses#view" class="back-link">← Back to Courses</a>
+        <span class="blog-category"> {{COURSE.category}}</span>
+      </div>
+      <h1>{{COURSE.courseName}}</h1>
+      <div class="blog-meta">
+
+    </header>
+
+    <img src="{{COURSE.courseImage}}" alt="{{COURSE.courseName}}" style="width:100%; border-radius:12px; margin-bottom:20px;">
+
+    <div class="blog-content">
+<br>
+    <!-- PASTE THIS BUTTON HERE -->
+    
+    ₦{{COURSE.price}}
+    <br>
+<a 
+  href="https://wa.me/2349056611890?text={{BUY_WHATSAPP_MESSAGE}}" 
+  target="_blank" 
+  class="btn-whatsapp"
+  style="display:inline-flex; align-items:center; gap:8px; margin:15px 15px 15px 0; padding:12px 20px; background:#25D366; color:white; border-radius:8px; text-decoration:none; font-weight:600; font-size:16px;"
+>
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.894 11.892-1.99-.001-3.959-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 4.315 1.731 6.086l.235.36-1.116 4.122 4.222-1.105z"/></svg>
+  Register on WhatsApp
+</a>
+
+
+
+
+      {{{COURSE.courseContent}}}
+      <b>Duration:</b> {{COURSE.duration}}
+    </div>
+  </article>
+
+  <section class="related-skills">
+    <h2>More in {{COURSE.category}}</h2>
+    <div class="related-grid">
+      {{#RELATED}}
+        <a href="/courses/{{slug}}" class="post-card">
+          <h3>{{courseName}}<p>₦{{price}}</p></h3>
+          
+        </a>
+      {{/RELATED}}
+    </div>
+  </section>
+</main>
+
+{{> partials/more}}
+
+  {{> partials/float}}
+
+{{> partials/footer}}
+
+</body>
+</html>
+

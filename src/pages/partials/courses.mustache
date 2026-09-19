@@ -1,0 +1,37 @@
+<section id="courses" class="page">
+  <h2 id="view">All Courses</h2>
+  <p style="color: var(--text-muted);">Every Tech Course You May Need!</p>
+
+   <div class="category-filter">
+    
+      {{#CATEGORIES}}
+      <a href="/courses?category={{slug}}"     hx-get="/courses?category={{slug}}"
+    hx-target="#courses-content"
+    hx-swap="innerHTML"
+    hx-push-url="true" class="category-btn {{#active}}active{{/active}}">
+        <span>{{icon}}</span> {{name}}
+      </a>
+      {{/CATEGORIES}}
+    </div>
+
+
+
+  <div class="projects-grid" id="deals-container">
+    {{#COURSES}}
+    <div class="project-card">
+      <img src="{{courseImage}}" alt="{{courseName}}">
+      <div class="project-content">
+        <h3>{{courseName}}</h3>
+        <div class="tags">
+          {{#TOOLS}}
+          <span class="tag">{{names}}</span>
+          {{/TOOLS}}
+        </div>
+        <p>₦{{price}}</p>
+        <p>{{courseDescription}}</p>
+        <a href="/courses/{{slug}}" class="view-project">View Course →</a>
+      </div>
+    </div>
+    {{/COURSES}}
+  </div>
+</section>

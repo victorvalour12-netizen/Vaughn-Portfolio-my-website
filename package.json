@@ -1,0 +1,29 @@
+{
+  "dependencies": {
+    "dotenv": "^18.0.3",
+    "express": "^5.2.1",
+    "mustache-express": "^1.3.2",
+    "nodemon": "^3.1.14"
+  },
+  "name": "vaughn-portfolio-my-website",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/app.js",
+    "dev": "nodemon src/app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/victorvalour12-netizen/Vaughn-Portfolio-my-website.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/victorvalour12-netizen/Vaughn-Portfolio-my-website/issues"
+  },
+  "homepage": "https://github.com/victorvalour12-netizen/Vaughn-Portfolio-my-website#readme"
+}

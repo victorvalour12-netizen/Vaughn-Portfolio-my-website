@@ -1,0 +1,59 @@
+<div class="floating-share" id="floatingShare">
+  <button id="shareBtn" class="share-float-btn" type="button">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"> 
+      <path d="M18 8C19.6569 8 21 6.65685 21 5C21 3.34315 19.6569 2 18 2C16.3431 2 15 3.34315 15 5C15 5.12545 15.0107 5.2492 15.0316 5.37063L6.18833 10.3061C5.77409 9.94166 5.24346 9.75 4.66667 9.75C3.00977 9.75 1.66667 11.0931 1.66667 12.75C1.66667 14.4069 3.00977 15.75 4.66667 15.75C5.24346 15.75 5.77409 15.5583 6.18833 15.1939L15.0316 20.1294C15.0107 20.2508 15 20.3745 15 20.5C15 22.1569 16.3431 23.5 18 23.5C19.6569 23.5 21 22.1569 21 20.5C21 18.8431 19.6569 17.5 18 17.5C17.4232 17.5 16.8926 17.6917 16.4784 18.0561L7.63511 13.1206C7.65601 12.9992 7.66667 12.8755 7.66667 12.75C7.66667 12.6245 7.65601 12.5008 7.63511 12.3794L16.4784 7.44394C16.8926 7.80833 17.4232 8 18 8Z"/>
+    </svg>
+  </button>
+  <div id="shareMenu" class="share-menu hidden">
+    <a href="#" id="shareWhatsApp" target="_blank" rel="noopener">WhatsApp</a>
+    <a href="#" id="shareTwitter" target="_blank" rel="noopener">Twitter</a>
+    <a href="#" id="shareFacebook" target="_blank" rel="noopener">Facebook</a>
+    <a href="#" id="copyLink">Copy Link</a>
+  </div>
+</div>
+
+<script>
+(function() {
+  const url = window.location.href;
+  const title = document.title;
+
+  document.addEventListener('click', function(e) {
+    const btn = e.target.closest('#shareBtn');
+    if(btn) {
+      e.preventDefault();
+      e.stopPropagation();
+      
+      if (navigator.share) {
+        navigator.share({ title: title, text: title, url: url }).catch(function(){});
+      } else {
+        document.getElementById('shareMenu').classList.toggle('hidden');
+      }
+      return;
+    }
+
+    if(!e.target.closest('#floatingShare')) {
+      const menu = document.getElementById('shareMenu');
+      if(menu) menu.classList.add('hidden');
+    }
+  });
+
+  document.addEventListener('DOMContentLoaded', function(){
+    const w = document.getElementById('shareWhatsApp');
+    const t = document.getElementById('shareTwitter'); 
+    const f = document.getElementById('shareFacebook');
+    const c = document.getElementById('copyLink');
+    
+    if(w) w.href = 'https://wa.me/?text=' + encodeURIComponent(title + ' ' + url);
+    if(t) t.href = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(title) + '&url=' + encodeURIComponent(url);
+    if(f) f.href = 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(url);
+    
+    if(c) c.addEventListener('click', function(e) {
+      e.preventDefault();
+      navigator.clipboard.writeText(url).then(function() {
+        alert('Link copied!');
+        document.getElementById('shareMenu').classList.add('hidden');
+      });
+    });
+  });
+})();
+</script>

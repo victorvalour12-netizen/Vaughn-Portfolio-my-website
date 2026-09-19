@@ -1,0 +1,327 @@
+const express = require('express');
+const path = require('path');
+const app = express();
+
+const mustacheExpress = require('mustache-express');
+const SKILLS = require('./skills');
+const PROJECTS = require('./projects');
+const DEALS = require('./deals');
+const COURSES = require('./courses');
+const BLOGS = require('./blogs');
+const UL = require('./ul');
+
+
+
+app.use(express.static(path.join(__dirname, "public")));
+
+app.set('views', path.join(__dirname, 'pages'));
+app.set('view engine', 'mustache');
+app.engine('mustache', mustacheExpress());
+
+
+
+app.get('/', (req, res) => {
+    const nav = UL.map(item => ({
+        ...item,
+        isActive: item.key === "home"
+    }))
+
+    const data = { SKILLS: SKILLS, UL: nav, HOME: true }
+
+    if (req.headers['hx-request']) {
+        return res.render('partials/home', data)
+    }
+
+    res.render('index', data)
+});
+
+app.get('/projects', (req, res) => {
+    const nav = UL.map(item => ({
+        ...item,
+        isActive: item.key === "projects"
+    }))
+
+    const data = { PROJECTS: PROJECTS, UL: nav, PROJECTSPAGE: true }
+
+    if (req.headers['hx-request']) {
+        return res.render('partials/projects', data)
+    }
+
+    res.render('index', data)
+});
+
+app.get('/projects/:slug', (req, res) => {
+    const slug = req.params.slug;
+    const matchedProject = PROJECTS.find(project => project.slug.toString() === slug);
+
+    const related = PROJECTS.filter(p =>
+        p.category === matchedProject.category && p.slug.toString() !== slug
+    ).slice(0, 3)
+
+    const BASE_URL = process.env.BASE_URL || 'http://localhost:3000'
+
+    res.render('project-single', {
+        PROJECT: matchedProject,
+        TITLE: matchedProject.projectName,
+        RELATED: related,
+        BASE_URL: BASE_URL
+    });
+})
+
+
+// DEALS LIST PAGE
+
+const LIMIT = 10; // load 10 at a time
+
+app.get('/deals', (req, res) => {
+  const nav = UL.map(item => ({
+    ...item,
+    isActive: item.key === "deals"
+  }))
+
+  const ALL_CATEGORIES = [
+    { name: 'All', slug: 'all', icon: '🔥' },
+    { name: 'Cars', slug: 'Car Deals#view', icon: '🚗' },
+    { name: 'Laptops', slug: 'Laptop Deals#view', icon: '💻' },
+    { name: 'Phones', slug: 'Phone Deals#view', icon: '📱' },
+    { name: 'Gaming', slug: 'Gaming Deals#view', icon: '🎮' },
+  ];
+
+  const categorySlug = req.query.category || 'all';
+  const page = parseInt(req.query.page) || 1;
+
+  const CATEGORIES = ALL_CATEGORIES.map(cat => ({
+    ...cat,
+    active: cat.slug === categorySlug
+  }));
+
+  // Filter deals
+  let filteredDeals = DEALS;
+  if (categorySlug !== 'all') {
+    filteredDeals = DEALS.filter(d => d.category === categorySlug);
+  }
+
+  // Paginate
+  const startIndex = (page - 1) * LIMIT;
+  const endIndex = page * LIMIT;
+  const paginatedDeals = filteredDeals.slice(startIndex, endIndex);
+  const hasMore = endIndex < filteredDeals.length;
+
+  const data = {
+    DEALS: paginatedDeals,
+    CATEGORIES: CATEGORIES,
+    UL: nav,
+    DEALSPAGE: true,
+    hasMore: hasMore,
+    nextPage: page + 1,
+    currentCategory: categorySlug
+  }
+
+  // HTMX partial swap
+  if (req.headers['hx-request']) {
+    return res.render('partials/deals', data)
+  }
+  // Full page Load
+  res.render('index', data)
+});
+
+// NEW API route for infinite scroll JS
+app.get('/api/deals', (req, res) => {
+  const categorySlug = req.query.category || 'all';
+  const page = parseInt(req.query.page) || 1;
+
+  let filteredDeals = DEALS;
+  if (categorySlug !== 'all') {
+    filteredDeals = DEALS.filter(d => d.category === categorySlug);
+  }
+
+  const startIndex = (page - 1) * LIMIT;
+  const endIndex = page * LIMIT;
+
+  res.json({
+    DEALS: filteredDeals.slice(startIndex, endIndex),
+    hasMore: endIndex < filteredDeals.length
+  });
+});
+
+// SINGLE DEAL PAGE
+app.get('/deals/:slug', (req, res) => {
+    const slug = req.params.slug;
+    const matchedDeal = DEALS.find(deal => deal.slug.toString() === slug);
+
+    if (!matchedDeal) return res.status(404).send("Deal not found")
+
+    const related = DEALS.filter(r =>
+        r.category === matchedDeal.category && r.slug.toString() !== slug
+    ).slice(0, 3)
+
+    const BASE_URL = process.env.BASE_URL || 'http://localhost:3000'
+
+    const message = `Hi Valour, I would like to get this item:\n*${matchedDeal.dealName}*\nPrice: ₦${matchedDeal.price}\nLink: ${BASE_URL}/deals/${matchedDeal.slug}\nImage: ${BASE_URL}${matchedDeal.dealImage}\n\nIs the deal still available?`;
+
+    res.render('deal-single', {
+        DEAL: matchedDeal,
+        TITLE: matchedDeal.dealName,
+        RELATED: related,
+        BASE_URL: BASE_URL,
+        BUY_WHATSAPP_MESSAGE: encodeURIComponent(message) // ADD THIS LINE
+    });
+});
+
+
+
+app.get('/courses', (req, res) => {
+    const nav = UL.map(item => ({
+        ...item,
+        isActive: item.key === "courses"
+    }))
+
+    // 1. Define categories with icons
+    const ALL_CATEGORIES = [
+        { name: 'All', slug: 'all#view', icon: '🔥' },
+        { name: 'Coding', slug: 'Coding#view', icon: '👨‍💻' },
+        { name: 'Creative', slug: 'Creative#view', icon: '🎨' },
+         { name: 'Business', slug: 'Business#view', icon: '💼' }
+    ];
+
+    const categorySlug = req.query.category || 'all';
+
+    // Mark active
+    const CATEGORIES = ALL_CATEGORIES.map(cat => ({
+        ...cat,
+        active: cat.slug === categorySlug
+    }));
+
+    // Filter deals. Your DEALS items MUST have `category: 'gaming'`
+    let filteredCourses = COURSES;
+    if (categorySlug !== 'all') {
+        filteredCourses = COURSES.filter(d => d.category === categorySlug);
+    }
+
+    const data = {
+        COURSES: filteredCourses,
+        CATEGORIES: CATEGORIES,
+        UL: nav,
+        COURSESPAGE: true
+    }
+
+    // HTMX partial swap
+    if (req.headers['hx-request']) {
+        return res.render('partials/courses', data)
+    }
+    // Full page load
+    res.render('index', data)
+});
+
+
+// SINGLE COURSE PAGE
+app.get('/courses/:slug', (req, res) => {
+    const slug = req.params.slug;
+    const matchedCourse = COURSES.find(course => course.slug.toString() === slug);
+
+    if (!matchedCourse) return res.status(404).send("Course not found")
+
+    const related = COURSES.filter(r =>
+        r.category === matchedCourse.category && r.slug.toString() !== slug
+    ).slice(0, 3)
+
+    const BASE_URL = process.env.BASE_URL || 'http://localhost:3000'
+
+    const message = `Hi Valour, I would like to register for this course:\n*${matchedCourse.courseName}*\nPrice: ₦${matchedCourse.price}\nLink: ${BASE_URL}/deals/${matchedCourse.slug}\nImage: ${BASE_URL}${matchedCourse.courseImage}\n\nWhere do I pay and where's your Loaction?`;
+
+    res.render('course-single', {
+        COURSE: matchedCourse,
+        TITLE: matchedCourse.courseName,
+        RELATED: related,
+        BASE_URL: BASE_URL,
+        BUY_WHATSAPP_MESSAGE: encodeURIComponent(message) // ADD THIS LINE
+    });
+});
+
+
+
+app.get('/blogs', (req, res) => {
+    const nav = UL.map(item => ({
+        ...item,
+        isActive: item.key === "blogs"
+    }))
+
+    // 1. ADD THIS: Sort newest first
+    const sortedBlogs = [...BLOGS].sort((a, b) => new Date(b.date) - new Date(a.date));
+
+    // 2. CHANGE THIS: use sortedBlogs instead of BLOGS
+    const data = { BLOGS: sortedBlogs, UL: nav, BLOGSPAGE: true }
+
+    if (req.headers['hx-request']) {
+        return res.render('partials/blogs', data)
+    }
+
+    res.render('index', data)
+});
+
+app.get('/blogs/:slug', (req, res) => {
+    const id = req.params.slug;
+    const matchedBlog = BLOGS.find(blog => blog.slug === id);
+
+    const related = BLOGS.filter(b =>
+        b.category === matchedBlog.category && b.slug !== id
+    ).slice(0, 3)
+
+    const matchedPov = BLOGS.find(blog => blog.slug === id);
+
+    const pov = BLOGS.filter(p =>
+        p.pov === matchedPov.pov && p.slug !== id
+    ).slice(0, 3)
+
+    const BASE_URL = process.env.BASE_URL || 'http://localhost:3000'
+
+    res.render('blog-single', {
+        BLOG: matchedBlog,
+        TITLE: matchedBlog.blogName,
+        RELATED: related,
+        POV: pov,
+        BASE_URL: BASE_URL
+    });
+})
+
+
+app.get('/aboutMe', (req, res) => {
+    const nav = UL.map(item => ({
+        ...item,
+        isActive: item.key === "about Me"
+    }))
+
+
+
+    res.render('index', { UL: nav, ABOUTPAGE: true })
+});
+
+app.get('/:contactId', (req, res) => {
+    const id = req.params.contactId;
+
+    const matchedContact = SKILLS.find(skill => skill.contactId.toString() === id);
+
+    const related = SKILLS.filter(s =>
+        s.category === matchedContact.category && s.contactId.toString() !== id
+    ).slice(0, 3)
+
+    const BASE_URL = process.env.BASE_URL || 'http://localhost:3000'
+
+    res.render('contact-single', {
+        CONTACT: matchedContact,
+        TITLE: matchedContact.contactType,
+        RELATED: related,
+        BASE_URL: BASE_URL
+    });
+})
+
+
+
+
+
+const port = process.env.PORT || 3000;
+
+
+app.listen(port, () => {
+    console.log(`server running on http://localhost:${port}`);
+});

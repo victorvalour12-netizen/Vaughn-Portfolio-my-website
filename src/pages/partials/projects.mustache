@@ -1,0 +1,27 @@
+ <section id="projects" class="page">
+
+      <h2>My Projects</h2>
+      <p style="color: var(--text-muted);"> Here are some websites I've built for clients and personal projects.</p>
+
+      <div class="projects-grid" id="projects-container">
+        <!-- TO ADD NEW PROJECT: just copy one .project-card block below -->
+        {{#PROJECTS}}
+        <div class="project-card">
+          <img src={{projectImage}}>
+          <div class="project-content">
+            <h3>{{projectname}}</h3>
+
+ <div class="tags">
+                {{#TOOL}}
+              <span class="tag">{{name}}</span>
+            {{/TOOL}}
+            </div>
+              
+            <p>{{projectDescription}}
+            </p>
+            <a href="{{projectId}}" class="view-project">View Project →</a>
+          </div>
+        </div>
+        {{/PROJECTS}}
+      </div>
+    </section>

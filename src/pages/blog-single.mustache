@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- Primary Meta Tags -->
+  <title> Stories by Vaughn | {{TITLE}} </title>
+  <meta name="title" content="{{TITLE}} | My Blog">
+  <meta name="description" content="{{BLOG.blogContent}}">
+  <meta name="keywords" content="{{BLOG.category}}, blog, {{BLOG.blogName}}">
+  <meta name="author" content="Valour">
+  <link rel="canonical" href="https://{{BASE_URL}}/blogs/{{BLOG.slug}}">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://{{BASE_URL}}/blogs/{{BLOG.slug}}">
+  <meta property="og:title" content="{{TITLE}}">
+  <meta property="og:description" content="{{BLOG.blogContent}}">
+  <meta property="og:site_name" content="Vaughn Writes">
+  <meta property="article:published_time" content="{{BLOG.date}}">
+  <meta property="article:section" content="{{BLOG.category}}">
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://{{BASE_URL}}/blogs/{{BLOG.slug}}">
+  <meta property="twitter:title" content="{{TITLE}}">
+  <meta property="twitter:description" content="{{BLOG.blogContent}}">
+
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+
+  {{> partials/nav}} <!-- if you have a nav partial -->
+
+
+  <main class="blog-page" style="margin-top: 150px;">
+    <article class="blog-single">
+      
+      <header class="blog-header">
+      <div class='blog-nav'>
+        <a href="/blogs#view" class="back-link">← Back to Blogs</a>
+        <span class="blog-category">{{BLOG.category}}</span>
+        </div>
+        <h1>{{BLOG.blogName}}</h1>
+        
+        <div class="blog-meta">
+          {{#BLOG.DATE}}
+            <time datetime="{{BLOG.date}}">
+              <span>{{date}}</span>
+            </time>
+          {{/BLOG.DATE}}
+          <img src="{{BLOG.blogImage}}" alt="{{BLOG.blogImage}}" style="width:100%; border-radius:12px; margin-bottom:20px;">
+        </div>
+      </header>
+
+      <div class="blog-content">
+        {{{BLOG.blogContent}}} <!-- triple braces to render HTML if you have <p>, <b> etc -->
+      </div>
+
+    </article>
+
+    <section class="related-skills">
+      <h2>Read more</h2>
+      <div class="related-grid">
+        {{#POV}}
+          <a href="/blogs/{{slug}}" class="post-card">
+            <h3>Read the {{character}}'s POV</span></h3>
+          </a>
+        {{/POV}}
+      </div>
+    </section>
+
+    <section class="related-skills">
+      <h2>More from {{BLOG.category}}</h2>
+      <div class="related-grid">
+        {{#RELATED}}
+          <a href="/blogs/{{slug}}" class="post-card">
+          <p>{{blogName}} ~ <span>{{category}}</span></p>
+
+          </a>
+        {{/RELATED}}
+      </div>
+    </section>
+  </main>
+
+  {{> partials/more}}
+
+  {{> partials/float}}
+
+
+
+  {{> partials/footer}} <!-- if you have a footer partial -->
+
+</body>
+</html>
+

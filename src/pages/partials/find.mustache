@@ -1,0 +1,68 @@
+
+<button class="klax-floating-btn" id="klaxOpenBtn">
+  ❓ Can't find a deal?
+</button>
+
+<div id="klaxModal" class="klax-modal">
+  <div class="klax-modal-content">
+    <span class="klax-close" id="klaxCloseBtn">&times;</span>
+    <h2>Request an Item</h2>
+    <form class="klax-form" id="klaxForm">
+      <label>Your Name</label><input type="text" name="name" required>
+      <label>WhatsApp</label><input type="tel" name="whatsapp" placeholder="+234 800 000 0000" required>
+      <label>Request</label><textarea name="message" rows="4" required></textarea>
+      <button type="submit" class="klax-submit">Send Request</button>
+    </form>
+    <p id="klaxStatus" style="text-align:center; margin-top:10px;"></p>
+  </div>
+</div>
+
+<script>
+  (function () {
+    console.log("KLAX: Partial loaded");
+
+    const btn = document.getElementById('klaxOpenBtn');
+    const modal = document.getElementById('klaxModal');
+    const close = document.getElementById('klaxCloseBtn');
+    const form = document.getElementById('klaxForm');
+    const textarea = document.querySelector('#klaxModal textarea[name="message"]');
+
+    if (!btn || !modal) {
+      console.error("KLAX: Button or Modal not found");
+      return;
+    }
+
+    // Change text + placeholder based on page
+    let page = window.location.pathname.toLowerCase();
+    if (page.includes('project')) {
+      btn.innerText = "❓ Can't find a project?";
+      textarea.placeholder = "e.g: Hotel Website, E-commerce App...";
+    }
+    else if (page.includes('course')) {
+      btn.innerText = "❓ Can't find a course?";
+      textarea.placeholder = "e.g: AI Course, Python Course...";
+    }
+    else {
+      textarea.placeholder = "e.g: iPhone 17 Pro Max, PS5 Pro...";
+    }
+
+    btn.addEventListener('click', function () {
+      console.log("KLAX: Button clicked");
+      modal.style.display = 'block';
+    });
+
+    close.addEventListener('click', function () { modal.style.display = 'none'; });
+    window.addEventListener('click', function (e) { if (e.target == modal) modal.style.display = 'none'; });
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      const fd = new FormData(form);
+      const myNumber = "2349056611890"; // <-- PUT YOUR WHATSAPP NUMBER HERE. NO +
+      const msg = `New Request from ${page}%0AName: ${fd.get('name')}%0AWhatsApp: ${fd.get('whatsapp')}%0ARequest: ${fd.get('message')}`;
+      window.open(`https://wa.me/${myNumber}?text=${msg}`, '_blank');
+      document.getElementById('klaxStatus').innerText = "Sent! Check WhatsApp";
+      document.getElementById('klaxStatus').style.color = "green";
+      setTimeout(() => { modal.style.display = 'none'; form.reset(); document.getElementById('klaxStatus').innerText = ""; }, 2000);
+    });
+  })();
+</script>

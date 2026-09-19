@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Primary Meta Tags -->
+  <title> Projects by Vaughn | {{TITLE}} </title>
+  <meta name="title" content="{{TITLE}} | My Projects">
+  <meta name="description" content="{{PROJECT.features}}">
+  <meta name="keywords" content="{{PROJECT.category}}, project, {{PROJECT.projectName}}">
+  <meta name="author" content="Your Name">
+  <link rel="canonical" href="https://{{BASE_URL}}/projects/{{PROJECT.slug}}">
+
+<head>
+  <title>{{TITLE}} - Valour</title>
+  
+  <!-- Open Graph / Facebook / WhatsApp -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="{{BASE_URL}}/projects/{{PROJECT.slug}}">
+  <meta property="og:title" content="{{PROJECT.title}}">
+  <meta property="og:description" content="{{PROJECT.excerpt}}">
+  <meta property="og:image" content="{{BASE_URL}}{{PROJECT.image}}">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:site_name" content="Valour">
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="{{BASE_URL}}/projects/{{PROJECT.slug}}">
+  <meta property="twitter:title" content="{{PROJECT.title}}">
+  <meta property="twitter:description" content="{{PROJECT.excerpt}}">
+  <meta property="twitter:image" content="{{BASE_URL}}{{PROJECT.image}}">
+
+  <link rel="stylesheet" href="/styles.css">
+</head>
+
+  <link rel="stylesheet" href="/styles.css">
+</head>
+
+<body>
+
+  {{> partials/nav}} <!-- if you have a nav partial -->
+
+
+
+<main class="blog-page" style="margin-top: 150px;">
+  <article class="blog-single">
+
+    <header class="blog-header">
+      <div class="blog-nav">
+        <a href="/projects#view" class="back-link">← Back to Projects</a>
+        <span class="blog-category">{{PROJECT.category}}</span>
+      </div>
+      <h1>{{PROJECT.projectName}}</h1>
+
+      <img class="projectImage" src="{{PROJECT.projectImage}}" alt="{{PROJECT.projectName}}" style="width:100%; border-radius:12px; margin:20px 0;">
+
+      <div class="blog-meta">
+        {{#PROJECT.TOOL}}
+        <time datetime="">
+          <span>{{name}}</span>
+        </time>
+        {{/PROJECT.TOOL}}
+               <p>{{PROJECT.projectDescription}}</p>
+
+      </div>
+
+    </header>
+
+    <div class="blog-content">
+        <p>{{PROJECT.excerpt}}</p>
+    </div>
+
+    <!-- TIERS SECTION ADDED -->
+    <p class="keyFeats" style="font-size:24px; font-weight:700; margin:40px 0 20px;">Key Features & Plans</p>
+
+    <div class="related-grid"> <!-- reuse blog grid -->
+
+      <!-- TIER 1 -->
+      <div class="post-card tier-card">
+        <h3>{{PROJECT.tier1Label}} ←</h3>
+        {{#PROJECT.features1}}
+          <p class="feature-item">{{{FEAT}}}</p>
+        {{/PROJECT.features1}}
+        <p class="price">PRICE: {{PROJECT.price1}} ←</p>
+      </div>
+
+      <!-- TIER 2 -->
+      <div class="post-card tier-card">
+        <h3>{{PROJECT.tier2Label}} ←</h3>
+        {{#PROJECT.features2}}
+          <p class="feature-item">{{{FEAT}}}</p>
+        {{/PROJECT.features2}}
+        <p class="price">PRICE: {{PROJECT.price2}} ←</p>
+      </div>
+
+    </div>
+
+          <div>
+        <h3 class="project-start">Start Project </h3>
+      </div>
+
+    
+    <!-- CONTACT FORM -->
+    <form class="contact-form" onsubmit="sendToWhatsApp(event)" style="margin-top:40px;">
+      <div class="form-group">
+        <label>Your {{PROJECT.clientReference}} Name</label>
+        <input type="text" name="name" required placeholder="{{PROJECT.placeholder}}">
+      </div>
+
+      <div class="form-group">
+        <label>Choose TIER</label>
+        <select name="TIER" required class="form-group">
+          <option value="">Select</option>
+          <option value="TIER 1">{{PROJECT.tier1Label}} - {{PROJECT.price1}}</option>
+          <option value="TIER 2">{{PROJECT.tier2Label}} - {{PROJECT.price2}}</option>
+        </select>
+      </div>
+
+
+      <div class="form-group">
+        <label>Message</label>
+        <textarea name="message" rows="5" required></textarea>
+      </div>
+
+      <button type="submit" class="btn">Send Message</button>
+    </form>
+
+  </article>
+
+  <!-- MORE PROJECTS - Same as blog "More from" -->
+  <section class="related-skills">
+    <h2>More {{PROJECT.category}}</h2>
+    <div class="related-grid">
+      {{#RELATED}}
+      <a href="/projects/{{slug}}" class="post-card">
+        <h3>{{projectName}}</h3>
+      </a>
+      {{/RELATED}}
+    </div>
+  </section>
+
+  <!-- MORE FROM VAUGHN -->
+
+ {{> partials/more}}
+</main>
+
+  {{> partials/float}}
+
+
+  {{> partials/footer}} <!-- if you have a footer partial -->
+
+
+<script>
+function sendToWhatsApp(e) {
+  e.preventDefault();
+  const form = e.target;
+  const name = form.name.value;
+  const tier = form.TIER.value;
+  const message = form.message.value;
+  const text = `Hi Vaughn, I'm from ${name}\nProject: {{PROJECT.projectName}}\nTier: ${tier}\nMessage: ${message}`;
+  window.open(`https://wa.me/2349056611890?text=${encodeURIComponent(text)}`, '_blank');
+}
+</script>
+
+
+</body>
+
+</html>

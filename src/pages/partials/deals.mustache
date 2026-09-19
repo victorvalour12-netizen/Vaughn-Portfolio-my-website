@@ -1,0 +1,34 @@
+<header class="blog-header">
+  <h1>All Deals</h1>
+  <p>Every Tech Item You May Need!</p>
+</header>
+
+<!-- CATEGORY FILTER -->
+<div class="category-filter">
+  {{#CATEGORIES}}
+  <a 
+    href="/deals?category={{slug}}"
+    hx-get="/deals?category={{slug}}"
+    hx-target="#deals-content"
+    hx-swap="innerHTML"
+    hx-push-url="true"
+    class="category-btn {{#active}}active{{/active}}">
+    <span>{{icon}}</span> {{name}}
+  </a>
+  {{/CATEGORIES}}
+</div>
+
+<!-- DEALS GRID -->
+<div class="related-grid">
+  {{#DEALS}}
+  <a href="/deals/{{slug}}" class="post-card">
+    <img src="{{image}}" alt="{{name}}" style="width:100%; height:200px; object-fit:cover; border-radius:8px; margin-bottom:12px;">
+    <h3>{{name}}</h3>
+    <p class="price">{{price}}</p>
+  </a>
+  {{/DEALS}}
+</div>
+
+{{^DEALS}}
+  <p style="text-align:center; margin-top:40px; color:var(--text-muted)">No deals found in this category.</p>
+{{/DEALS}}
