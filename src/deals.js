@@ -1,7 +1,7 @@
 const DEALS = [
-  // ===== LAPTOP DEALS - 12 =====
+  // ===== laptops - 12 =====
 
-  // ===== GAMING DEALS =====
+  // ===== gaming =====
   {
     dealName: "Sony PlayStation 5 Pro 2TB Disc Edition",
     slug: "ps5-pro-2tb",
@@ -19,7 +19,7 @@ const DEALS = [
     <h3>Condition</h3>
     <p><b>Brand New, Sealed.</b> 1 Year Sony Warranty.</p>
   `,
-    category: "Gaming Deals",
+    category: "gaming",
     price: "1800000",
     date: "2026-08-27",
     DATE: [{ date: "2026-08-27" }],
@@ -42,14 +42,14 @@ const DEALS = [
     <h3>Condition</h3>
     <p><b>Brand New, Sealed.</b> 1 Year Microsoft Warranty.</p>
   `,
-    category: "Gaming Deals",
+    category: "gaming",
     price: "1500000",
     date: "2026-08-27",
     DATE: [{ date: "2026-08-27" }],
     CTA: 'Buy'
   },
 
-  // ===== PHONE DEALS =====
+  // ===== phones =====
   {
     dealName: "Samsung Galaxy S27 Ultra 1TB - Titanium Black",
     slug: "samsung-s27-ultra-1tb",
@@ -67,7 +67,7 @@ const DEALS = [
     </ul>
     <p><b>Condition:</b> Brand New, Sealed. 2 Years Warranty.</p>
   `,
-    category: "Phone Deals",
+    category: "phones",
     price: "3400000",
     date: "2026-08-27",
     DATE: [{ date: "2026-08-27" }],
@@ -90,7 +90,7 @@ const DEALS = [
     </ul>
     <p><b>Condition:</b> Brand New, Sealed.</p>
   `,
-    category: "Phone Deals",
+    category: "phones",
     price: "2300000",
     date: "2026-08-27",
     DATE: [{ date: "2026-08-27" }],
@@ -113,7 +113,7 @@ const DEALS = [
     </ul>
     <p><b>Condition:</b> Brand New, Sealed. 1 Year Apple Warranty.</p>
   `,
-    category: "Phone Deals",
+    category: "phones",
     price: "2100000",
     date: "2026-08-27",
     DATE: [{ date: "2026-08-27" }],
@@ -135,7 +135,7 @@ const DEALS = [
     </ul>
     <p><b>Condition:</b> Brand New, Sealed.</p>
   `,
-    category: "Phone Deals",
+    category: "phones",
     price: "3500000",
     date: "2026-08-27",
     DATE: [{ date: "2026-08-27" }],
@@ -157,7 +157,7 @@ const DEALS = [
     </ul>
     <p><b>Condition:</b> Brand New, Sealed.</p>
   `,
-    category: "Phone Deals",
+    category: "phones",
     price: "2800000",
     date: "2026-08-27",
     DATE: [{ date: "2026-08-27" }],
@@ -179,14 +179,14 @@ const DEALS = [
     </ul>
     <p><b>Condition:</b> Brand New, Sealed.</p>
   `,
-    category: "Phone Deals",
+    category: "phones",
     price: "3400000",
     date: "2026-08-27",
     DATE: [{ date: "2026-08-27" }],
     CTA: 'Buy'
   },
 
-  // ===== LAPTOP DEALS =====
+  // ===== laptops =====
   {
     dealName: "Lenovo Legion 9i 2026 i9 RTX 5090",
     slug: "legion-9i-2026-rtx5090",
@@ -204,7 +204,7 @@ const DEALS = [
     </ul>
     <p><b>Condition:</b> Brand New, Sealed. 2 Years Warranty.</p>
   `,
-    category: "Laptop Deals",
+    category: "laptops",
     price: "7800000",
     date: "2026-08-27",
     DATE: [{ date: "2026-08-27" }],
@@ -227,7 +227,7 @@ const DEALS = [
     </ul>
     <p><b>Condition:</b> Brand New, Sealed.</p>
   `,
-    category: "Laptop Deals",
+    category: "laptops",
     price: "7200000",
     date: "2026-08-27",
     DATE: [{ date: "2026-08-27" }],
@@ -250,14 +250,14 @@ const DEALS = [
     </ul>
     <p><b>Condition:</b> Brand New, Sealed.</p>
   `,
-    category: "Laptop Deals",
+    category: "laptops",
     price: "8500000",
     date: "2026-08-27",
     DATE: [{ date: "2026-08-27" }],
     CTA: 'Buy'
   },
 
-  // ===== CAR DEALS =====
+  // ===== cars =====
   {
     dealName: "Lexus LX 600 F-Sport 2026 - Black",
     slug: "lexus-lx600-fsport-2026",
@@ -274,7 +274,7 @@ const DEALS = [
     </ul>
     <p><b>Condition:</b> Brand New. 4 Years Warranty.</p>
   `,
-    category: "Car Deals",
+    category: "cars",
     price: "380000",
     date: "2026-08-27",
     DATE: [{ date: "2026-08-27" }],
@@ -296,7 +296,7 @@ const DEALS = [
     </ul>
     <p><b>Condition:</b> Brand New.</p>
   `,
-    category: "Car Deals",
+    category: "cars",
     price: "420000",
     date: "2026-08-27",
     DATE: [{ date: "2026-08-27" }],
@@ -318,7 +318,7 @@ const DEALS = [
     </ul>
     <p><b>Condition:</b> Brand New.</p>
   `,
-    category: "Car Deals",
+    category: "cars",
     price: "450000",
     date: "2026-08-27",
     DATE: [{ date: "2026-08-27" }],

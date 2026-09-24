@@ -13,36 +13,16 @@
     </div>
   </nav>
 
-  <!-- HOME PAGE -->
-  <section id="home" class="pageF active">
-    <div class="hero">
-      <div>
-        <h1>Hi, I'm <span>Vaughn Valour</span></h1>
-        <p>Full Stack Web Developer helping businesses rank and convert with SEO and user-friendly websites. I
-          build
-          fast, modern,
-          and scalable web applications.</p>
-        <div class="hero-btnS">
-          <a href="/projects#view"><button class="btn">View My Work</button></a>
-          <a href="/blogs#view"><button class="btnR">Read Stories</button></a>
-        </div>
-      </div>
-      <div>
-        <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=600" alt="Developer coding">
-      </div>
-    </div>
 
-    <div class="project-nav" style="margin-top: 15px;">
-      <ul class="nav-links">
-        {{#UL}}
-        <li> <a href="{{id}}" class="nav-links {{#isActive}} active {{/isActive}}  hx-get=" {{id}}"
-            hx-target="#main-content" hx-push-url="true">{{p}}
-          </a>
-          {{/UL}}
-      </ul>
-    </div>
 
     {{#HOME}}
+
+     {{> partials/hero}}
+
+      {{> partials/menu}}
+
+
+ 
     <div class=" page">
       <h2>What do you need?</h2>
       <div class="projects-grid">
@@ -65,6 +45,8 @@
 
 
     {{#PROJECTSPAGE}}
+
+ {{> partials/menu}}
 
     <section id="projects" class="page">
 
@@ -101,46 +83,48 @@
 
 
     {{#DEALSPAGE}}
-    <section id="deals" class="page">
-      <h2 id="view">All Deals</h2>
-      <p style="color: var(--text-muted);">Every Tech Deal You May Need!</p>
 
-      <div class="category-filter">
-        {{#CATEGORIES}}
-        <a href="/deals?category={{slug}}" hx-get="/deals?category={{slug}}" hx-target="#deals-content"
-          hx-swap="innerHTML" hx-push-url="true" class="category-btn {{#active}}active{{/active}}">
-          <span>{{icon}}</span> {{name}}
-        </a>
-        {{/CATEGORIES}}
-      </div>
+     {{> partials/menu}}
 
-      <div id="deals-content"> <!-- HTMX will swap this -->
-        <div class="projects-grid" id="deals-container">
-          {{#DEALS}}
-          <div class="project-card">
-            <img src="{{dealImage}}" alt="{{dealName}}" loading="lazy">
-            <div class="project-content">
-              <h3>{{dealName}}</h3>
-              <div class="tags">
-                {{#TOOL}}
-                <span class="tag">{{name}}</span>
-                {{/TOOL}}
-              </div>
-              <p>₦{{price}}</p>
-              <p>{{dealDescription}}</p>
-              <a href="/deals/{{slug}}" class="view-project">View Deal →</a>
-            </div>
+<section id="deals" class="page">
+  <h2 id="view">All Deals</h2>
+  <p style="color: var(--text-muted);">Every Tech Deal You May Need!</p>
+
+  <div class="category-filter">
+    {{#CATEGORIES}}
+    <a href="/deals?category={{slug}}" class="category-btn {{activeClass}}">
+      <span>{{icon}}</span> {{name}}
+    </a>
+    {{/CATEGORIES}}
+  </div>
+
+  <div id="deals-content">
+    <div class="projects-grid" id="deals-container">
+      {{#DEALS}}
+      <div class="project-card">
+        <img src="{{dealImage}}" alt="{{dealName}}" loading="lazy">
+        <div class="project-content">
+          <h3>{{dealName}}</h3>
+          <div class="tags">
+            {{#TOOL}}
+            <span class="tag">{{name}}</span>
+            {{/TOOL}}
           </div>
-          {{/DEALS}}
+          <p>₦{{price}}</p>
+          <p>{{dealDescription}}</p>
+          <a href="/deals/{{slug}}" class="view-project">View Deal →</a>
         </div>
-
-        <div id="loader" class="loader" style="display:none; text-align:center; padding:2rem;">Loading more deals...
-        </div>
-        <div id="end-message" style="display:none; text-align:center; padding:2rem;">No more deals 🎉</div>
       </div>
-    </section>
+      {{/DEALS}}
+    </div>
 
-    {{> partials/find}}
+    {{^DEALS}}
+      <p style="text-align:center; padding:2rem;">No deals in this category.</p>
+    {{/DEALS}}
+  </div>
+</section>
+
+{{> partials/find}}
     {{/DEALSPAGE}}
 
     <script>
@@ -222,6 +206,9 @@
 
 
     {{#COURSESPAGE}}
+
+     {{> partials/menu}}
+
     <section id="courses" class="page">
       <h2 id="view">AI Courses</h2>
       <p style="color: var(--text-muted);"> Build Real-World Projects with AI!</p>
@@ -269,6 +256,8 @@
 
     {{#BLOGSPAGE}}
 
+ {{> partials/menu}}
+
     <section id="blogs" class="page">
 
       <h2 id="view">My Blogs</h2>
@@ -299,6 +288,8 @@
     {{/BLOGSPAGE}}
 
     {{#ABOUTPAGE}}
+
+ {{> partials/menu}}
 
     <section id="about" class="page about">
       <div class="about-header" id="view">

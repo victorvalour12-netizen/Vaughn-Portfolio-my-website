@@ -1,0 +1,9 @@
+    <div class="project-nav" style="margin-top: 75px;">
+      <ul class="nav-links">
+        {{#UL}}
+        <li> <a href="{{id}}" class="nav-links {{#isActive}} active {{/isActive}}  hx-get=" {{id}}"
+            hx-target="#main-content" hx-push-url="true">{{p}}
+          </a>
+          {{/UL}}
+      </ul>
+    </div>

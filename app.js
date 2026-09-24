@@ -3,18 +3,18 @@ const path = require('path');
 const app = express();
 
 const mustacheExpress = require('mustache-express');
-const SKILLS = require('./skills');
+const SKILLS = require('./src/skills');
 const PROJECTS = require('./projects');
-const DEALS = require('./deals');
-const COURSES = require('./courses');
-const BLOGS = require('./blogs');
-const UL = require('./ul');
+const DEALS = require('./src/deals');
+const COURSES = require('./src/courses');
+const BLOGS = require('./src/blogs');
+const UL = require('./src/ul');
 
 
 
-app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, "src", "public")));
 
-app.set('views', path.join(__dirname, 'pages'));
+app.set('views', path.join(__dirname, 'src', 'pages'));
 app.set('view engine', 'mustache');
 app.engine('mustache', mustacheExpress());
 
@@ -71,78 +71,80 @@ app.get('/projects/:slug', (req, res) => {
 
 // DEALS LIST PAGE
 
-const LIMIT = 10; // load 10 at a time
+const LIMIT = 10;
 
 app.get('/deals', (req, res) => {
-  const nav = UL.map(item => ({
-    ...item,
-    isActive: item.key === "deals"
-  }))
+    const nav = UL.map(item => ({
+        ...item,
+        isActive: item.key === "deals"
+    }))
 
-  const ALL_CATEGORIES = [
-    { name: 'All', slug: 'all', icon: '🔥' },
-    { name: 'Cars', slug: 'Car Deals#view', icon: '🚗' },
-    { name: 'Laptops', slug: 'Laptop Deals#view', icon: '💻' },
-    { name: 'Phones', slug: 'Phone Deals#view', icon: '📱' },
-    { name: 'Gaming', slug: 'Gaming Deals#view', icon: '🎮' },
-  ];
+    const ALL_CATEGORIES = [
+        { name: 'All', slug: 'all', icon: '🔥' },
+        { name: 'Cars', slug: 'cars', icon: '🚗' },
+        { name: 'Laptops', slug: 'laptops', icon: '💻' },
+        { name: 'Phones', slug: 'phones', icon: '📱' },
+        { name: 'Gaming', slug: 'gaming', icon: '🎮' },
+    ];
 
-  const categorySlug = req.query.category || 'all';
-  const page = parseInt(req.query.page) || 1;
+const categorySlug = (req.query.category || 'all').toLowerCase().trim();
 
-  const CATEGORIES = ALL_CATEGORIES.map(cat => ({
+const CATEGORIES = ALL_CATEGORIES.map(cat => {
+  const isActive = cat.slug.toLowerCase() === categorySlug;
+  return {
     ...cat,
-    active: cat.slug === categorySlug
-  }));
-
-  // Filter deals
-  let filteredDeals = DEALS;
-  if (categorySlug !== 'all') {
-    filteredDeals = DEALS.filter(d => d.category === categorySlug);
+    active: isActive,
+    activeClass: isActive ? 'active' : '' // we add a string class directly
   }
+});
 
-  // Paginate
-  const startIndex = (page - 1) * LIMIT;
-  const endIndex = page * LIMIT;
-  const paginatedDeals = filteredDeals.slice(startIndex, endIndex);
-  const hasMore = endIndex < filteredDeals.length;
 
-  const data = {
-    DEALS: paginatedDeals,
-    CATEGORIES: CATEGORIES,
-    UL: nav,
-    DEALSPAGE: true,
-    hasMore: hasMore,
-    nextPage: page + 1,
-    currentCategory: categorySlug
-  }
+    // Make filter case-insensitive and match your real data
+    let filteredDeals = DEALS;
+    if (categorySlug !== 'all') {
+        filteredDeals = DEALS.filter(d => 
+          d.category.toLowerCase().includes(categorySlug) || 
+          d.category.toLowerCase() === categorySlug
+        );
+    }
 
-  // HTMX partial swap
-  if (req.headers['hx-request']) {
-    return res.render('partials/deals', data)
-  }
-  // Full page Load
-  res.render('index', data)
+    const page = parseInt(req.query.page) || 1;
+    const startIndex = (page - 1) * LIMIT;
+    const endIndex = page * LIMIT;
+    const paginatedDeals = filteredDeals.slice(startIndex, endIndex);
+
+    const data = {
+        DEALS: paginatedDeals,
+        CATEGORIES: CATEGORIES,
+        UL: nav,
+        DEALSPAGE: true,
+        hasMore: endIndex < filteredDeals.length,
+        nextPage: page + 1,
+        currentCategory: categorySlug
+    }
+
+    // ALWAYS full page now - no more htmx partial
+    res.render('index', data)
 });
 
 // NEW API route for infinite scroll JS
-app.get('/api/deals', (req, res) => {
-  const categorySlug = req.query.category || 'all';
-  const page = parseInt(req.query.page) || 1;
+// app.get('/api/deals', (req, res) => {
+//     const categorySlug = req.query.category || 'all';
+//     const page = parseInt(req.query.page) || 1;
 
-  let filteredDeals = DEALS;
-  if (categorySlug !== 'all') {
-    filteredDeals = DEALS.filter(d => d.category === categorySlug);
-  }
+//     let filteredDeals = DEALS;
+//     if (categorySlug !== 'all') {
+//         filteredDeals = DEALS.filter(d => d.category === categorySlug);
+//     }
 
-  const startIndex = (page - 1) * LIMIT;
-  const endIndex = page * LIMIT;
+//     const startIndex = (page - 1) * LIMIT;
+//     const endIndex = page * LIMIT;
 
-  res.json({
-    DEALS: filteredDeals.slice(startIndex, endIndex),
-    hasMore: endIndex < filteredDeals.length
-  });
-});
+//     res.json({
+//         DEALS: filteredDeals.slice(startIndex, endIndex),
+//         hasMore: endIndex < filteredDeals.length
+//     });
+// });
 
 // SINGLE DEAL PAGE
 app.get('/deals/:slug', (req, res) => {
@@ -178,10 +180,10 @@ app.get('/courses', (req, res) => {
 
     // 1. Define categories with icons
     const ALL_CATEGORIES = [
-        { name: 'All', slug: 'all#view', icon: '🔥' },
-        { name: 'Coding', slug: 'Coding#view', icon: '👨‍💻' },
-        { name: 'Creative', slug: 'Creative#view', icon: '🎨' },
-         { name: 'Business', slug: 'Business#view', icon: '💼' }
+        { name: 'All', slug: 'all', icon: '🔥' },
+        { name: 'Coding', slug: 'Coding', icon: '👨‍💻' },
+        { name: 'Creative', slug: 'Creative', icon: '🎨' },
+        { name: 'Business', slug: 'Business', icon: '💼' }
     ];
 
     const categorySlug = req.query.category || 'all';
@@ -320,8 +322,12 @@ app.get('/:contactId', (req, res) => {
 
 
 const port = process.env.PORT || 3000;
+// app.listen(port...)
 
+module.exports = app;
 
-app.listen(port, () => {
-    console.log(`server running on http://localhost:${port}`);
-});
+if (require.main === module) {
+    app.listen(process.env.PORT || 3000, () => {
+        console.log('running');
+    });
+}
