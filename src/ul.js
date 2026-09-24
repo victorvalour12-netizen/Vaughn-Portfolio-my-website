@@ -7,32 +7,32 @@ const UL = [
 
     {
         key: 'projects',
-        id: '/projects#view',
+        id: '/projects',
         p: 'Projects'
     },
 
 
     {
         key: 'deals',
-        id: '/deals#view',
+        id: '/deals',
         p: 'Deals'
     },
 
         {
         key: 'courses',
-        id: '/courses#view',
+        id: '/courses',
         p: 'Ai Courses'
     },
 
     {
         key: 'blogs',
-        id: '/blogs#view',
+        id: '/blogs',
         p: 'Stories'
     },
 
     {
         key: 'about Me',
-        id: '/aboutMe#view',
+        id: '/aboutMe',
         p: 'About Me'
     }
     

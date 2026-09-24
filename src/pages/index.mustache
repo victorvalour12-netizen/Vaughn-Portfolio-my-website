@@ -216,7 +216,7 @@
       <div class="category-filter">
 
         {{#CATEGORIES}}
-        <a href="/courses?category={{slug}}" hx-get="/courses?category={{slug}}" hx-target="#courses-content"
+        <a href="/courses?category={{slug}}" hx-target="#courses-content"
           hx-swap="innerHTML" hx-push-url="true" class="category-btn {{#active}}active{{/active}}">
           <span>{{icon}}</span> {{name}}
         </a>

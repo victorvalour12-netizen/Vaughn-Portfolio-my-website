@@ -1,6 +1,10 @@
+require('dotenv').config();
 const express = require('express');
-const path = require('path');
 const app = express();
+const path = require('path');
+
+
+
 
 const mustacheExpress = require('mustache-express');
 const SKILLS = require('./src/skills');
@@ -26,7 +30,7 @@ app.get('/', (req, res) => {
         isActive: item.key === "home"
     }))
 
-    const data = { SKILLS: SKILLS, UL: nav, HOME: true }
+    const data = { SKILLS: SKILLS, UL: nav, HOME: true, BASE_URL: BASE_URL }
 
     if (req.headers['hx-request']) {
         return res.render('partials/home', data)
@@ -41,7 +45,7 @@ app.get('/projects', (req, res) => {
         isActive: item.key === "projects"
     }))
 
-    const data = { PROJECTS: PROJECTS, UL: nav, PROJECTSPAGE: true }
+    const data = { PROJECTS: PROJECTS, UL: nav, PROJECTSPAGE: true, BASE_URL: BASE_URL }
 
     if (req.headers['hx-request']) {
         return res.render('partials/projects', data)
@@ -120,7 +124,8 @@ const CATEGORIES = ALL_CATEGORIES.map(cat => {
         DEALSPAGE: true,
         hasMore: endIndex < filteredDeals.length,
         nextPage: page + 1,
-        currentCategory: categorySlug
+        currentCategory: categorySlug,
+        BASE_URL: BASE_URL
     }
 
     // ALWAYS full page now - no more htmx partial
@@ -204,7 +209,8 @@ app.get('/courses', (req, res) => {
         COURSES: filteredCourses,
         CATEGORIES: CATEGORIES,
         UL: nav,
-        COURSESPAGE: true
+        COURSESPAGE: true,
+        BASE_URL: BASE_URL
     }
 
     // HTMX partial swap
@@ -252,7 +258,7 @@ app.get('/blogs', (req, res) => {
     const sortedBlogs = [...BLOGS].sort((a, b) => new Date(b.date) - new Date(a.date));
 
     // 2. CHANGE THIS: use sortedBlogs instead of BLOGS
-    const data = { BLOGS: sortedBlogs, UL: nav, BLOGSPAGE: true }
+    const data = { BLOGS: sortedBlogs, UL: nav, BLOGSPAGE: true, BASE_URL: BASE_URL}
 
     if (req.headers['hx-request']) {
         return res.render('partials/blogs', data)
@@ -322,12 +328,20 @@ app.get('/:contactId', (req, res) => {
 
 
 const port = process.env.PORT || 3000;
-// app.listen(port...)
+const BASE_URL = process.env.BASE_URL || `http://localhost:${port}`; // <- ADD THIS
+
+// <- ADD THIS MIDDLEWARE - after app = express()
+app.use((req, res, next) => {
+  res.locals.BASE_URL = BASE_URL;
+  next();
+});
+
+// ... all your app.get() routes
 
 module.exports = app;
 
 if (require.main === module) {
-    app.listen(process.env.PORT || 3000, () => {
-        console.log('running');
+    app.listen(port, () => { // <- use port variable, not process.env.PORT again
+        console.log(`running on ${BASE_URL}`);
     });
 }

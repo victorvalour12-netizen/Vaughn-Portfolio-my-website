@@ -1,9 +1,34 @@
-    <div class="project-nav" style="margin-top: 75px;">
-      <ul class="nav-links">
-        {{#UL}}
-        <li> <a href="{{id}}" class="nav-links {{#isActive}} active {{/isActive}}  hx-get=" {{id}}"
-            hx-target="#main-content" hx-push-url="true">{{p}}
-          </a>
-          {{/UL}}
-      </ul>
-    </div>
+
+
+
+
+
+
+<div class="project-nav" style="margin-top: 75px;">
+  <ul class="nav-links scroll-menu">
+    {{#UL}}
+    <li><a href="{{id}}" class="nav-link {{#isActive}}active{{/isActive}}"hx-target="#main-content" hx-push-url="true">{{p}}</a></li>
+    {{/UL}}
+  </ul>
+</div>
+
+<script>
+const menu = document.querySelector('.scroll-menu');
+let isDown = false, startX, scrollLeft;
+
+menu.addEventListener('mousedown', (e) => {
+  isDown = true;
+  startX = e.pageX - menu.offsetLeft;
+  scrollLeft = menu.scrollLeft;
+});
+menu.addEventListener('mouseleave', () => isDown = false);
+menu.addEventListener('mouseup', () => isDown = false);
+menu.addEventListener('mousemove', (e) => {
+  if(!isDown) return;
+  e.preventDefault();
+  const x = e.pageX - menu.offsetLeft;
+  menu.scrollLeft = scrollLeft - (x - startX);
+});
+
+</script>
+
