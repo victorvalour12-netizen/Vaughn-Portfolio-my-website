@@ -42,7 +42,7 @@
         <a href="/blogs" class="back-link">← Back to Blogs</a>
         <span class="blog-category">{{BLOG.category}}</span>
         </div>
-        <h1>{{BLOG.blogName}}</h1>
+        <h1 style="text-transform: uppercase;">{{BLOG.blogName}}</h1>
         
         <div class="blog-meta">
           {{#BLOG.DATE}}
@@ -76,7 +76,7 @@
       <div class="related-grid">
         {{#RELATED}}
           <a href="/blogs/{{slug}}" class="post-card">
-          <p>{{blogName}} ~ <span>{{category}}</span></p>
+          <p style="text-transform: uppercase;">{{blogName}} ~ <span>{{category}}</span></p>
 
           </a>
         {{/RELATED}}

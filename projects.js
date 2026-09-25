@@ -135,6 +135,24 @@ const PROJECTS = [
             { FEAT: '<span style="color: var(--accent)">✓ WhatsApp Chat:</span> Direct chat button for clients' },
             { FEAT: '<span style="color: var(--accent)">✓ Custom Animations:</span> Modern and interactive design' }
         ]
+    },
+    {
+        projectName: 'Mama Gold Restaurant',
+        slug: 'mama-gold',
+        projectImage: '/images/mama.jpg',
+        projectDescription: 'Restaurant website that increased orders by 300%. Built for Lagos client.',
+        type: 'completed', // <--- IMPORTANT
+        liveLink: 'https://mamagoldrestaurant.com', // <--- YOUR LIVE LINK
+        TOOL: [{ name: 'Next.js' }, { name: 'Tailwind' }]
+    },
+    {
+        projectName: 'Valour Cars Deal',
+        slug: 'valour-cars',
+        projectImage: '/images/cars.jpg',
+        projectDescription: 'Car dealership platform with WhatsApp ordering.',
+        type: 'completed',
+        liveLink: 'https://valour-cars.vercel.app',
+        TOOL: [{ name: 'Node.js' }, { name: 'EJS' }]
     }
 ]
 

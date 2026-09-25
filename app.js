@@ -39,13 +39,61 @@ app.get('/', (req, res) => {
     res.render('index', data)
 });
 
+
 app.get('/projects', (req, res) => {
     const nav = UL.map(item => ({
         ...item,
         isActive: item.key === "projects"
     }))
 
-    const data = { PROJECTS: PROJECTS, UL: nav, PROJECTSPAGE: true, BASE_URL: BASE_URL }
+    const categorySlug = (req.query.category || 'starter').toLowerCase().trim();
+
+    const PROJECT_CATEGORIES = [
+        { name: 'Projects', slug: 'starter', icon: '🚀' },
+        { name: 'Completed Projects', slug: 'completed', icon: '✅' }
+    ];
+
+    const CATS_UI = PROJECT_CATEGORIES.map(cat => ({
+        ...cat,
+        activeClass: cat.slug === categorySlug ? 'active' : ''
+    }));
+
+    // Filter
+    let filtered = PROJECTS;
+    if (categorySlug !== 'all') {
+        filtered = PROJECTS.filter(p => (p.type || 'starter') === categorySlug);
+    }
+
+    // Add WhatsApp + Share like blogs/deals
+    const projectsWithLinks = filtered.map(proj => {
+        const projectUrl = `${BASE_URL}/projects/${proj.slug}`;
+        const isCompleted = (proj.type || 'starter') === 'completed';
+        
+        let message;
+        if (isCompleted) {
+            message = `Hi Valour, I saw your completed project:\n*${proj.projectName}*\nLink: ${projectUrl}\nLive: ${proj.liveLink || projectUrl}\n\nCan you build something similar for me?`;
+        } else {
+            message = `Hi Valour, I would like to start this project:\n*${proj.projectName}*\nPrice: ₦${proj.price || 'Ask'}\nLink: ${projectUrl}\nImage: ${BASE_URL}${proj.projectImage}\n\nLet's discuss?`;
+        }
+
+        return {
+            ...proj,
+            IS_COMPLETED: isCompleted,
+            IS_STARTER: !isCompleted,
+            BUY_WHATSAPP_MESSAGE: encodeURIComponent(message),
+            SHARE_URL: projectUrl,
+            SHARE_WHATSAPP: `https://wa.me/?text=${encodeURIComponent(`Check this project: ${proj.projectName} - ${projectUrl}`)}`
+        }
+    });
+
+    const data = { 
+        PROJECTS: projectsWithLinks, 
+        PROJECT_CATEGORIES: CATS_UI,
+        UL: nav, 
+        PROJECTSPAGE: true, 
+        BASE_URL: BASE_URL,
+        currentProjectCategory: categorySlug
+    }
 
     if (req.headers['hx-request']) {
         return res.render('partials/projects', data)
@@ -53,6 +101,7 @@ app.get('/projects', (req, res) => {
 
     res.render('index', data)
 });
+
 
 app.get('/projects/:slug', (req, res) => {
     const slug = req.params.slug;
@@ -91,31 +140,39 @@ app.get('/deals', (req, res) => {
         { name: 'Gaming', slug: 'gaming', icon: '🎮' },
     ];
 
-const categorySlug = (req.query.category || 'all').toLowerCase().trim();
+    const categorySlug = (req.query.category || 'all').toLowerCase().trim();
 
-const CATEGORIES = ALL_CATEGORIES.map(cat => {
-  const isActive = cat.slug.toLowerCase() === categorySlug;
-  return {
-    ...cat,
-    active: isActive,
-    activeClass: isActive ? 'active' : '' // we add a string class directly
-  }
-});
+    const CATEGORIES = ALL_CATEGORIES.map(cat => {
+        const isActive = cat.slug.toLowerCase() === categorySlug;
+        return {
+            ...cat,
+            active: isActive,
+            activeClass: isActive ? 'active' : ''
+        }
+    });
 
-
-    // Make filter case-insensitive and match your real data
+    // Make filter case-insensitive
     let filteredDeals = DEALS;
     if (categorySlug !== 'all') {
-        filteredDeals = DEALS.filter(d => 
-          d.category.toLowerCase().includes(categorySlug) || 
-          d.category.toLowerCase() === categorySlug
+        filteredDeals = DEALS.filter(d =>
+            d.category.toLowerCase().includes(categorySlug) ||
+            d.category.toLowerCase() === categorySlug
         );
     }
 
     const page = parseInt(req.query.page) || 1;
     const startIndex = (page - 1) * LIMIT;
     const endIndex = page * LIMIT;
-    const paginatedDeals = filteredDeals.slice(startIndex, endIndex);
+    let paginatedDeals = filteredDeals.slice(startIndex, endIndex);
+
+    // ADD WHATSAPP MESSAGE - SAME AS SINGLE PAGE
+    paginatedDeals = paginatedDeals.map(deal => {
+        const message = `Hi Valour, I would like to get this item:\n*${deal.dealName}*\nPrice: ₦${deal.price}\nLink: ${BASE_URL}/deals/${deal.slug}\nImage: ${BASE_URL}${deal.dealImage}\n\nIs the deal still available?`;
+        return {
+            ...deal,
+            BUY_WHATSAPP_MESSAGE: encodeURIComponent(message)
+        }
+    });
 
     const data = {
         DEALS: paginatedDeals,
@@ -128,7 +185,6 @@ const CATEGORIES = ALL_CATEGORIES.map(cat => {
         BASE_URL: BASE_URL
     }
 
-    // ALWAYS full page now - no more htmx partial
     res.render('index', data)
 });
 
@@ -199,11 +255,21 @@ app.get('/courses', (req, res) => {
         active: cat.slug === categorySlug
     }));
 
-    // Filter deals. Your DEALS items MUST have `category: 'gaming'`
+    // Filter courses
     let filteredCourses = COURSES;
     if (categorySlug !== 'all') {
         filteredCourses = COURSES.filter(d => d.category === categorySlug);
     }
+
+    // ADD WHATSAPP MESSAGE TO EACH COURSE
+    filteredCourses = filteredCourses.map(course => {
+        const message = `Hi Valour, I would like to register for this course:\n*${course.courseName}*\nPrice: ₦${course.price}\nLink: ${BASE_URL}/courses/${course.slug}\nImage: ${BASE_URL}${course.courseImage}\n\nWhere do I pay and where's your Location?`;
+        
+        return {
+            ...course,
+            BUY_WHATSAPP_MESSAGE: encodeURIComponent(message)
+        }
+    });
 
     const data = {
         COURSES: filteredCourses,
@@ -220,6 +286,7 @@ app.get('/courses', (req, res) => {
     // Full page load
     res.render('index', data)
 });
+
 
 
 // SINGLE COURSE PAGE
@@ -254,11 +321,53 @@ app.get('/blogs', (req, res) => {
         isActive: item.key === "blogs"
     }))
 
-    // 1. ADD THIS: Sort newest first
-    const sortedBlogs = [...BLOGS].sort((a, b) => new Date(b.date) - new Date(a.date));
+    const categorySlug = (req.query.category || 'all').toLowerCase().trim();
 
-    // 2. CHANGE THIS: use sortedBlogs instead of BLOGS
-    const data = { BLOGS: sortedBlogs, UL: nav, BLOGSPAGE: true, BASE_URL: BASE_URL}
+    const BLOG_CATEGORIES = [
+        { name: 'All', slug: 'all', icon: '📰' },
+        { name: 'Tech News', slug: 'tech', icon: '💻' },
+        { name: 'Billionaire News', slug: 'billionaire', icon: '💰' },
+        { name: 'World News', slug: 'world', icon: '🌍' },
+        { name: 'Church Gist', slug: 'Church Gist', icon: '✝' }
+    ];
+
+    const BLOG_CATS_UI = BLOG_CATEGORIES.map(cat => ({
+        ...cat,
+        activeClass: cat.slug === categorySlug ? 'active' : ''
+    }));
+
+    let filteredBlogs = [...BLOGS];
+    if (categorySlug !== 'all') {
+        filteredBlogs = filteredBlogs.filter(b => {
+            return (b.category || '').toLowerCase().includes(categorySlug);
+        });
+    }
+
+    const sortedBlogs = filteredBlogs.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+    // ADD SHARE LINKS - SAME FORMAT AS DEALS
+    const blogsWithShare = sortedBlogs.map(blog => {
+        const blogUrl = `${BASE_URL}/blogs/${blog.slug}`;
+        const shareText = `Check out this blog: *${blog.blogName}*\n${blog.excerpt}\n\nRead here: ${blogUrl}`;
+
+        return {
+            ...blog,
+            SHARE_URL: blogUrl,
+            SHARE_WHATSAPP: `https://wa.me/?text=${encodeURIComponent(shareText)}`,
+            SHARE_TWITTER: `https://twitter.com/intent/tweet?text=${encodeURIComponent(blog.blogName)}&url=${encodeURIComponent(blogUrl)}`,
+            SHARE_FACEBOOK: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(blogUrl)}`,
+            SHARE_TEXT_ENCODED: encodeURIComponent(shareText)
+        }
+    });
+
+    const data = {
+        BLOGS: blogsWithShare,
+        BLOG_CATEGORIES: BLOG_CATS_UI,
+        UL: nav,
+        BLOGSPAGE: true,
+        BASE_URL: BASE_URL,
+        currentBlogCategory: categorySlug
+    }
 
     if (req.headers['hx-request']) {
         return res.render('partials/blogs', data)
@@ -266,6 +375,7 @@ app.get('/blogs', (req, res) => {
 
     res.render('index', data)
 });
+
 
 app.get('/blogs/:slug', (req, res) => {
     const id = req.params.slug;
@@ -332,8 +442,8 @@ const BASE_URL = process.env.BASE_URL || `http://localhost:${port}`; // <- ADD T
 
 // <- ADD THIS MIDDLEWARE - after app = express()
 app.use((req, res, next) => {
-  res.locals.BASE_URL = BASE_URL;
-  next();
+    res.locals.BASE_URL = BASE_URL;
+    next();
 });
 
 // ... all your app.get() routes
