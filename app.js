@@ -24,7 +24,6 @@ app.use((req, res, next) => {
     next();
 });
 
-
 const ogs = require('open-graph-scraper');
 
 async function getLinkPreview(url) {
@@ -33,11 +32,9 @@ async function getLinkPreview(url) {
         const { result } = await ogs({
             url: url,
             timeout: 10,
-            headers: { 'user-agent': 'Mozilla/5.0' } // many sites block scraper without this
+            headers: { 'user-agent': 'Mozilla/5.0' }
         });
-
-        console.log('OG SCRAPED:', url, '->', result.ogTitle); // <-- add this to see in terminal
-
+        console.log('OG SCRAPED:', url, '->', result.ogTitle);
         return {
             title: result.ogTitle || result.twitterTitle || '',
             description: result.ogDescription || result.twitterDescription || '',
@@ -50,15 +47,12 @@ async function getLinkPreview(url) {
     }
 }
 
-
 // --- HELPER - MESSAGE + LINK, NO HARDCODE ---
 function getShareMessages(type, url, liveLink = null) {
     const pageUrl = url;
     const previewUrl = liveLink || url;
-
     let shareText = '';
     let buyText = '';
-
     if (type === 'projects') {
         if (liveLink) {
             shareText = `Check out this project I built 👇\n${previewUrl}\n\nWant something similar?\n${pageUrl}`;
@@ -80,7 +74,6 @@ function getShareMessages(type, url, liveLink = null) {
         shareText = `This course is worth it 💡\n${pageUrl}`;
         buyText = `Hi Valour, I want to register for this course:\n${pageUrl}\n\nWhere do I pay?`;
     }
-
     return {
         SHARE_URL: previewUrl,
         PAGE_URL: pageUrl,
@@ -92,7 +85,14 @@ function getShareMessages(type, url, liveLink = null) {
     }
 }
 
-// --- SEO HELPER - AUTOMATES HEAD DATA ---
+// --- FINAL FIXED SEO HELPER ---
+function toAbsoluteImage(imgPath) {
+    if (!imgPath) return `${BASE_URL.replace(/\/$/, '')}/images/og-image.jpg`;
+    if (imgPath.startsWith('http://') || imgPath.startsWith('https://')) return imgPath; // LINKS WORK
+    const cleanPath = imgPath.startsWith('/') ? imgPath : `/${imgPath}`;
+    return `${BASE_URL.replace(/\/$/, '')}${cleanPath}`;
+}
+
 function getSEO({ title, description, image, url, type = 'website', keywords }) {
     const cleanDesc = (description || '').toString().replace(/<[^>]*>/g, '').substring(0, 155);
     return {
@@ -100,7 +100,7 @@ function getSEO({ title, description, image, url, type = 'website', keywords }) 
         SEO_DESCRIPTION: cleanDesc,
         SEO_KEYWORDS: keywords,
         SEO_URL: url,
-        OG_IMAGE: image,
+        OG_IMAGE: toAbsoluteImage(image),
         OG_TYPE: type
     }
 }
@@ -109,9 +109,9 @@ function getSEO({ title, description, image, url, type = 'website', keywords }) 
 app.get('/', (req, res) => {
     const nav = UL.map(item => ({ ...item, isActive: item.key === "home" }))
     const seo = getSEO({
-        title: 'Vaughn Dev | SEO friendly | Full Stack Web Developer in Lagos',
+        title: 'Vaughn Tech | SEO friendly Web Developer in Lagos',
         description: 'Vaughn Valour is a Full Stack Web Developer in Lagos building fast, modern, SEO-friendly websites and web apps that rank and convert.',
-        image: `${BASE_URL}/src/og-image.jpg`,
+        image: `/images/og-image.jpg`,
         url: `${BASE_URL}/`,
         keywords: 'web developer Lagos, portfolio website, e-commerce website, business website, frontend developer Nigeria, seo friendly web developer'
     });
@@ -124,35 +124,25 @@ app.get('/', (req, res) => {
 app.get('/projects', async (req, res) => {
     const nav = UL.map(item => ({ ...item, isActive: item.key === "projects" }))
     const categorySlug = (req.query.category || 'completed').toLowerCase().trim();
-
     const PROJECT_CATEGORIES = [
         { name: 'Completed', slug: 'completed', icon: '✅' },
-
         { name: 'Start a Project', slug: 'starter', icon: '🚀' }
     ];
     const CATS_UI = PROJECT_CATEGORIES.map(cat => ({ ...cat, activeClass: cat.slug === categorySlug ? 'active' : '' }));
-
     let filtered = PROJECTS;
     if (categorySlug !== 'all') filtered = PROJECTS.filter(p => (p.type || 'starter') === categorySlug);
-
     const projectsWithLinks = await Promise.all(filtered.map(async (proj) => {
         const projectUrl = `${BASE_URL}/projects/${proj.slug}`;
         const isCompleted = (proj.type || 'starter') === 'completed';
-
         let og = null;
         if (isCompleted && proj.liveLink) {
             og = await getLinkPreview(proj.liveLink);
         }
-
         const share = getShareMessages('projects', projectUrl, isCompleted ? proj.liveLink : null);
-
         let waMessage = isCompleted
             ? `Hi Valour, I saw your completed project:\n*${proj.projectName}*\nLive: ${proj.liveLink}\n\nCan you build something similar?`
             : `Hi Valour, I would like to start this project:\n*${proj.projectName}*\nLink: ${projectUrl}\n\nLet's discuss?`;
-
-        // DEBUG - you will see this in terminal
         console.log(`Project: ${proj.projectName} | isCompleted: ${isCompleted} | OG:`, og?.title);
-
         return {
             ...proj,
             IS_COMPLETED: isCompleted,
@@ -165,22 +155,17 @@ app.get('/projects', async (req, res) => {
             BUY_WHATSAPP_MESSAGE: encodeURIComponent(waMessage),
         }
     }));
-
     const seo = getSEO({
-        title: categorySlug === 'completed' ? 'Completed Projects | Vaughn Dev' : 'Starter Projects You Can Launch Today | Vaughn Dev',
+        title: categorySlug === 'completed' ? 'Completed Projects | Vaughn Tech' : 'Starter Projects You Can Launch Today | Vaughn Tech',
         description: categorySlug === 'completed' ? 'See completed websites built by Vaughn Valour.' : 'Pick a starter template and launch in days.',
-        image: `${BASE_URL}/src/og-image.jpg`,
+        image: `/images/og-image.jpg`,
         url: `${BASE_URL}/projects?category=${categorySlug}`,
         keywords: 'web projects Lagos, starter websites'
     });
-
     const data = { PROJECTS: projectsWithLinks, PROJECT_CATEGORIES: CATS_UI, UL: nav, PROJECTSPAGE: true, BASE_URL, currentProjectCategory: categorySlug, ...seo }
-
     if (req.headers['hx-request']) return res.render('partials/projects', data)
     res.render('index', data)
 });
-
-
 
 app.get('/projects/:slug', (req, res) => {
     const matchedProject = PROJECTS.find(p => p.slug.toString() === req.params.slug);
@@ -189,9 +174,9 @@ app.get('/projects/:slug', (req, res) => {
     const projectUrl = `${BASE_URL}/projects/${matchedProject.slug}`;
     const share = getShareMessages('projects', projectUrl, matchedProject.type === 'completed' ? matchedProject.liveLink : null);
     const seo = getSEO({
-        title: `${matchedProject.projectName} | Vaughn Dev`,
+        title: `${matchedProject.projectName} | Vaughn Tech`,
         description: matchedProject.projectDescription || matchedProject.description || `Check out ${matchedProject.projectName} built by Vaughn Valour`,
-        image: matchedProject.projectImage ? `${BASE_URL}${matchedProject.projectImage}` : `${BASE_URL}/src/og-image.jpg`,
+        image: matchedProject.projectImage || `/images/og-image.jpg`,
         url: projectUrl,
         type: 'article',
         keywords: `${matchedProject.projectName}, ${matchedProject.category}, web development Lagos`
@@ -215,9 +200,9 @@ app.get('/deals', (req, res) => {
         return { ...deal, ...share }
     });
     const seo = getSEO({
-        title: `${categorySlug === 'all' ? 'Tech' : categorySlug} Deals in Lagos | Vaughn Dev`,
+        title: `${categorySlug === 'all' ? 'Tech' : categorySlug} Deals in Lagos | Vaughn Tech`,
         description: `Best ${categorySlug} deals in Lagos - phones, laptops, cars, gaming. Verified and affordable.`,
-        image: `${BASE_URL}/src/og-image.jpg`,
+        image: `/images/og-image.jpg`,
         url: `${BASE_URL}/deals?category=${categorySlug}`,
         keywords: `${categorySlug} deals Lagos, cheap ${categorySlug}`
     });
@@ -232,7 +217,7 @@ app.get('/deals/:slug', (req, res) => {
     const seo = getSEO({
         title: `${matchedDeal.dealName} - ₦${matchedDeal.price} | Deals`,
         description: `${matchedDeal.dealName} for ₦${matchedDeal.price}. ${matchedDeal.description || ''}`,
-        image: matchedDeal.dealImage ? `${BASE_URL}${matchedDeal.dealImage}` : `${BASE_URL}/src/og-image.jpg`,
+        image: matchedDeal.dealImage || `/images/og-image.jpg`,
         url: url,
         type: 'product',
         keywords: `${matchedDeal.dealName}, ${matchedDeal.category}, deals Lagos`
@@ -254,9 +239,9 @@ app.get('/blogs', (req, res) => {
         return { ...blog, ...share }
     });
     const seo = getSEO({
-        title: `Latest ${categorySlug === 'all' ? '' : categorySlug} News | Vaughn Dev Blog`,
+        title: `Latest ${categorySlug === 'all' ? '' : categorySlug} News | Vaughn Tech Blog`,
         description: `Latest ${categorySlug} news, tech gist, billionaire news and church gist from Vaughn Valour.`,
-        image: `${BASE_URL}/src/og-image.jpg`,
+        image: `/images/og-image.jpg`,
         url: `${BASE_URL}/blogs?category=${categorySlug}`,
         keywords: `${categorySlug} news, blog Lagos`
     });
@@ -273,7 +258,7 @@ app.get('/blogs/:slug', (req, res) => {
     const seo = getSEO({
         title: `${matchedBlog.blogName} | Vaughn Blog`,
         description: matchedBlog.excerpt || matchedBlog.description || matchedBlog.blogName,
-        image: matchedBlog.blogImage ? `${BASE_URL}${matchedBlog.blogImage}` : `${BASE_URL}/src/og-image.jpg`,
+        image: matchedBlog.blogImage || `/images/og-image.jpg`,
         url: url,
         type: 'article',
         keywords: `${matchedBlog.category}, ${matchedBlog.blogName}`
@@ -295,9 +280,9 @@ app.get('/courses', (req, res) => {
         return { ...c, ...share }
     });
     const seo = getSEO({
-        title: `${categorySlug === 'all' ? 'Tech' : categorySlug} Courses in Lagos | Vaughn Dev`,
+        title: `${categorySlug === 'all' ? 'Tech' : categorySlug} Courses in Lagos | Vaughn Tech`,
         description: `Learn ${categorySlug} with Vaughn Valour in Lagos. Practical courses that get you jobs.`,
-        image: `${BASE_URL}/src/og-image.jpg`,
+        image: `/images/og-image.jpg`,
         url: `${BASE_URL}/courses?category=${categorySlug}`,
         keywords: `${categorySlug} courses Lagos`
     });
@@ -315,7 +300,7 @@ app.get('/courses/:slug', (req, res) => {
     const seo = getSEO({
         title: `${matchedCourse.courseName} | Courses`,
         description: `${matchedCourse.courseName} - ₦${matchedCourse.price}. ${matchedCourse.description || ''}`,
-        image: matchedCourse.courseImage ? `${BASE_URL}${matchedCourse.courseImage}` : `${BASE_URL}/src/og-image.jpg`,
+        image: matchedCourse.courseImage || `/images/og-image.jpg`,
         url: url,
         type: 'product',
         keywords: `${matchedCourse.courseName}, courses Lagos`
@@ -328,7 +313,7 @@ app.get('/aboutMe', (req, res) => {
     const seo = getSEO({
         title: 'About Vaughn Valour | Web Developer Lagos',
         description: 'About Vaughn Valour - Full Stack Developer in Lagos helping businesses build fast websites that convert.',
-        image: `${BASE_URL}/src/og-image.jpg`,
+        image: `/images/og-image.jpg`,
         url: `${BASE_URL}/aboutMe`,
         keywords: 'about Vaughn Valour, web developer Lagos'
     });

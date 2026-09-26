@@ -157,7 +157,7 @@ const PROJECTS = [
     {
         type: 'completed',
 
-        liveLink: 'https://vaughndev.vercel.app',
+        liveLink: 'https://vaughntech.vercel.app',
 
     }
 ]
