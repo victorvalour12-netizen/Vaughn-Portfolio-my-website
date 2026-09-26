@@ -244,7 +244,7 @@ app.get('/deals/:slug', (req, res) => {
 app.get('/blogs', (req, res) => {
     const nav = UL.map(item => ({ ...item, isActive: item.key === "blogs" }))
     const categorySlug = (req.query.category || 'all').toLowerCase().trim();
-    const BLOG_CATEGORIES = [{ name: 'All', slug: 'all', icon: '📰' }, { name: 'Tech News', slug: 'tech', icon: '💻' }, { name: 'Billionaire News', slug: 'billionaire', icon: '💰' }, { name: 'World News', slug: 'world', icon: '🌍' }, { name: 'Church Gist', slug: 'Church Gist', icon: '✝' }];
+    const BLOG_CATEGORIES = [{ name: 'All', slug: 'all', icon: '📰' }, { name: 'Tech News', slug: 'tech', icon: '💻' }, { name: 'Billionaire News', slug: 'billionaire', icon: '💰' }, { name: 'World News', slug: 'world', icon: '🌍' }, { name: 'Church Gist', slug: 'church', icon: '✝' }];
     const BLOG_CATS_UI = BLOG_CATEGORIES.map(cat => ({ ...cat, activeClass: cat.slug === categorySlug ? 'active' : '' }));
     let filteredBlogs = [...BLOGS];
     if (categorySlug !== 'all') filteredBlogs = filteredBlogs.filter(b => (b.category || '').toLowerCase().includes(categorySlug));

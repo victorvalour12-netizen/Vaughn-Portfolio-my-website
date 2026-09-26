@@ -5,90 +5,65 @@
 <body>
   {{> partials/nav}}
 
-  <main class="blog-single-page">
-    <article class="blog-single-article">
+
+  <main class="blog-page" style="margin-top: 150px;">
+    <article class="blog-single">
       
-      <div class="blog-single-top">
-        <a href="/blogs" class="back-link">← Back to Blogs</a>
-        <span class="blog-single-cat">{{BLOG.category}}</span>
-      </div>
-
-      <header class="blog-single-header">
-        <h1 class="blog-single-title">{{BLOG.blogName}}</h1>
-        
-        <div class="blog-single-meta-row">
-          {{#BLOG.DATE}}
-          <div class="author-line">
-            <div class="author-avatar">H</div>
-            <div>
-              <span class="author-name">Harper</span>
-              <time datetime="{{BLOG.date}}">{{date}} • 5 min read</time>
-            </div>
-          </div>
-          {{/BLOG.DATE}}
-          
-          <div class="share-group">
-            <a href="{{SHARE_WHATSAPP}}" target="_blank" class="share-btn wa">WA</a>
-            <a href="{{SHARE_TWITTER}}" target="_blank" class="share-btn x">X</a>
-            <a href="{{SHARE_FACEBOOK}}" target="_blank" class="share-btn fb">FB</a>
-          </div>
+      <header class="blog-header">
+      <div class='blog-nav'>
+        <a href="/blogs#view" class="back-link">← Back to Blogs</a>
+        <span class="blog-category">{{BLOG.category}}</span>
         </div>
-
-        <div class="blog-single-cover">
-          <img src="{{BLOG.blogImage}}" alt="{{BLOG.blogName}}">
+        <h1>{{BLOG.blogName}}</h1>
+        
+        <div class="blog-meta">
+          {{#BLOG.DATE}}
+            <time datetime="{{BLOG.date}}">
+              <span>{{date}}</span>
+            </time>
+          {{/BLOG.DATE}}
+          <img src="{{BLOG.blogImage}}" alt="{{BLOG.blogImage}}" style="width:100%; border-radius:12px; margin-bottom:20px;">
         </div>
       </header>
 
-      <div class="blog-single-content">
-        {{{BLOG.blogContent}}}
+      <div class="blog-content">
+        {{{BLOG.blogContent}}} <!-- triple braces to render HTML if you have <p>, <b> etc -->
       </div>
-
-      <footer class="blog-single-footer">
-        <div class="tags">
-          <span class="tag">#{{BLOG.category}}</span>
-        </div>
-        <p>Share this story</p>
-        <div class="share-group large">
-            <a href="{{SHARE_WHATSAPP}}" target="_blank" class="share-btn wa">WhatsApp</a>
-            <a href="{{SHARE_TWITTER}}" target="_blank" class="share-btn x">Twitter</a>
-            <a href="{{SHARE_FACEBOOK}}" target="_blank" class="share-btn fb">Facebook</a>
-        </div>
-      </footer>
 
     </article>
 
-    <!-- READ MORE POV -->
-    {{#POV}}
-    <section class="related-section">
+    <section class="related-skills">
       <h2>Read more</h2>
       <div class="related-grid">
         {{#POV}}
-          <a href="/blogs/{{slug}}" class="related-card">
-            <h3>Read the {{character}}'s POV →</h3>
+          <a href="/blogs/{{slug}}" class="post-card">
+            <h3>Read the {{character}}'s POV</span></h3>
           </a>
         {{/POV}}
       </div>
     </section>
-    {{/POV}}
 
-    <!-- RELATED -->
-    <section class="related-section">
+    <section class="related-skills">
       <h2>More from {{BLOG.category}}</h2>
-      <div class="related-grid blog-related-grid">
+      <div class="related-grid">
         {{#RELATED}}
-          <a href="/blogs/{{slug}}" class="related-card blog-related">
-            <div class="related-img" style="background-image: url('{{blogImage}}')"></div>
-            <p>{{blogName}}</p>
-            <small>{{category}} • {{date}}</small>
+          <a href="/blogs/{{slug}}" class="post-card">
+          <p>{{blogName}} ~ <span>{{category}}</span></p>
+
           </a>
         {{/RELATED}}
       </div>
     </section>
-
   </main>
 
   {{> partials/more}}
+
   {{> partials/float}}
-  {{> partials/footer}}
+
+
+
+  {{> partials/footer}} <!-- if you have a footer partial -->
+
 </body>
 </html>
+
