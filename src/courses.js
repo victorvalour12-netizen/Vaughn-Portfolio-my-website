@@ -1,10 +1,8 @@
 const COURSES = [
-  // ... your existing Cyber Security and Full Stack courses
-
   {
     courseName: "AI + Full Stack Web Development",
     slug: "full-stack-web-development",
-    courseImage: "/img/courses/fullstack.jpg",
+    courseImage: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&h=600&fit=crop",
     courseDescription: "Build and deploy full web apps with MERN. Learn to use AI to code faster, debug, and generate components.",
     courseContent: `
       <p>Become a job-ready Full Stack Developer. Build 4 real projects and use AI tools to ship 3x faster.</p>
@@ -32,9 +30,9 @@ const COURSES = [
   },
 
   {
-    courseName: "  AI + Frontend Development",
+    courseName: "AI + Frontend Development",
     slug: "frontend-development",
-    courseImage: "/img/courses/frontend.jpg",
+    courseImage: "https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=800&h=600&fit=crop",
     courseDescription: "Build beautiful, responsive websites with HTML, CSS, React. Use AI to generate UI components and fix bugs instantly.",
     courseContent: `
       <p>Become a job-ready Frontend Developer. Build 5 real projects and ship them with AI assistance.</p>
@@ -62,9 +60,9 @@ const COURSES = [
   },
 
   {
-    courseName: " AI + Backend Development ",
+    courseName: "AI + Backend Development",
     slug: "backend-development",
-    courseImage: "/img/courses/backend.jpg",
+    courseImage: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&h=600&fit=crop",
     courseDescription: "Build APIs, Databases, and Server logic with Node.js. Use AI to write routes, handle auth, and test APIs.",
     courseContent: `
       <p>Become a Backend Engineer. Build secure APIs and scale them with AI tools.</p>
@@ -94,7 +92,7 @@ const COURSES = [
   {
     courseName: "Content Creation + AI Video",
     slug: "content-creation-ai",
-    courseImage: "/img/courses/content.jpg", 
+    courseImage: "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=800&h=600&fit=crop", 
     courseDescription: "Script, Shoot, Edit videos. Use AI to write scripts, edit videos, and grow your brand 10x faster.",
     courseContent: `
       <p>Master content creation for TikTok, Reels, and YouTube. Build a system that runs with AI.</p>
@@ -122,7 +120,7 @@ const COURSES = [
   {
     courseName: "Graphics Design + AI Tools",
     slug: "graphics-design-ai",
-    courseImage: "/img/courses/graphics.jpg",
+    courseImage: "https://images.unsplash.com/photo-1561070791-2526d30994b5?w=800&h=600&fit=crop",
     courseDescription: "Master Adobe, Figma and use AI to design logos, brands, and UI 5x faster.",
     courseContent: `
       <p>Become a pro designer. From concept to client delivery using Adobe, Figma and AI.</p>
@@ -150,7 +148,7 @@ const COURSES = [
   {
     courseName: "Excel + Data Analysis with AI",
     slug: "excel-data-ai",
-    courseImage: "/img/courses/excel.jpg",
+    courseImage: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=600&fit=crop",
     courseDescription: "Master Excel, Pivot Tables, and use AI to write formulas and analyze data in seconds.",
     courseContent: `
       <p>Go from Excel basics to job-ready Data Analyst. Let AI do the hard formulas for you.</p>

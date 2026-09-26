@@ -1,11 +1,9 @@
 const DEALS = [
-  // ===== laptops - 12 =====
-
-  // ===== gaming =====
+  // ===== GAMING DEALS =====
   {
     dealName: "Sony PlayStation 5 Pro 2TB Disc Edition",
     slug: "ps5-pro-2tb",
-    dealImage: "https://image.api.playstation.com/vulcan/ap/rnd/202311/2827/6a0f3b8c8f8c8f8c8f8c8f8c8f8c8f8c8.png",
+    dealImage: "https://images.unsplash.com/photo-1606144042614-b2417e99c4e3?w=800&h=600&fit=crop&q=80",
     dealDescription: "PS5 Pro 2TB. 8K Gaming, Ray Tracing, 2x DualSense Edge + 3 AAA games. Brand New.",
     dealContent: `
     <p>Get the ultimate gaming experience with PS5 Pro. 2x faster GPU, Advanced Ray Tracing, and AI upscaling.</p>
@@ -19,7 +17,7 @@ const DEALS = [
     <h3>Condition</h3>
     <p><b>Brand New, Sealed.</b> 1 Year Sony Warranty.</p>
   `,
-    category: "gaming",
+    category: "Gaming Deals",
     price: "1800000",
     date: "2026-08-27",
     DATE: [{ date: "2026-08-27" }],
@@ -28,7 +26,7 @@ const DEALS = [
   {
     dealName: "Xbox Series X 2TB Galaxy Black Edition",
     slug: "xbox-series-x-2tb",
-    dealImage: "https://assets.xboxservices.com/assets/8f/2d/8f2d8f2d-8f2d-8f2d-8f2d-8f2d8f2d8f2d.jpg",
+    dealImage: "https://images.unsplash.com/photo-1621259182978-fbf93132d53d?w=800&h=600&fit=crop&q=80",
     dealDescription: "Xbox Series X 2TB. 4K 120fps, Quick Resume, Game Pass Ultimate 12 Months. Brand New.",
     dealContent: `
     <p>The most powerful Xbox ever. Load games in seconds with custom SSD.</p>
@@ -42,7 +40,7 @@ const DEALS = [
     <h3>Condition</h3>
     <p><b>Brand New, Sealed.</b> 1 Year Microsoft Warranty.</p>
   `,
-    category: "gaming",
+    category: "Gaming Deals",
     price: "1500000",
     date: "2026-08-27",
     DATE: [{ date: "2026-08-27" }],
@@ -53,7 +51,7 @@ const DEALS = [
   {
     dealName: "Samsung Galaxy S27 Ultra 1TB - Titanium Black",
     slug: "samsung-s27-ultra-1tb",
-    dealImage: "https://fdn.gsmarena.com/imgroot/reviews/26/samsung-galaxy-s27-ultra/lifestyle/-1024w2/gsmarena_001.jpg",
+    dealImage: "https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?w=800&h=600&fit=crop&q=80",
     dealDescription: "Galaxy S27 Ultra 1TB. Snapdragon 8 Elite Gen 2, 200MP AI Camera, S-Pen, 7 Years Updates.",
     dealContent: `
     <p>The king of Android 2026. Built-in Galaxy AI and satellite messaging.</p>
@@ -76,7 +74,7 @@ const DEALS = [
   {
     dealName: "Samsung Galaxy Z Flip 8 512GB - Blue",
     slug: "galaxy-z-flip8-512gb",
-    dealImage: "https://fdn.gsmarena.com/imgroot/reviews/26/samsung-galaxy-z-flip8/lifestyle/-1024w2/gsmarena_001.jpg",
+    dealImage: "https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=800&h=600&fit=crop&q=80",
     dealDescription: "Galaxy Z Flip 8 512GB. Snapdragon 8 Elite Gen 2. 4.5-inch Cover Screen, Galaxy AI.",
     dealContent: `
     <p>The most pocketable flagship. Now with bigger battery and less crease.</p>
@@ -99,7 +97,7 @@ const DEALS = [
   {
     dealName: "iPhone 17 Air 512GB - Sky Blue",
     slug: "iphone-17-air-512gb",
-    dealImage: "https://fdn.gsmarena.com/imgroot/reviews/26/apple-iphone-17-air/lifestyle/-1024w2/gsmarena_001.jpg",
+    dealImage: "https://images.unsplash.com/photo-1592899677977-9c10ca588bbd?w=800&h=600&fit=crop&q=80",
     dealDescription: "iPhone 17 Air 512GB. Thinnest iPhone ever. A19 chip, Apple Intelligence, 48MP.",
     dealContent: `
     <p>Only 5.5mm thin. All-day battery with A19 efficiency.</p>
@@ -122,7 +120,7 @@ const DEALS = [
   {
     dealName: "iPhone 17 Pro Max 1TB - Desert Titanium",
     slug: "iphone-17-pro-max-1tb",
-    dealImage: "https://fdn.gsmarena.com/imgroot/reviews/26/apple-iphone-17-pro-max/lifestyle/-1024w2/gsmarena_001.jpg",
+    dealImage: "https://images.unsplash.com/photo-1695822822491-d92af5436e02?w=800&h=600&fit=crop&q=80",
     dealDescription: "iPhone 17 Pro Max 1TB. A19 Pro, 8x Optical Zoom, Apple Intelligence, Titanium.",
     dealContent: `
     <p>Apple's most advanced iPhone. Pro camera system with 8x tetraprism zoom.</p>
@@ -144,7 +142,7 @@ const DEALS = [
   {
     dealName: "Google Pixel 10 Pro 1TB - Obsidian",
     slug: "pixel-10-pro-1tb",
-    dealImage: "https://fdn.gsmarena.com/imgroot/reviews/26/google-pixel-10-pro/lifestyle/-1024w2/gsmarena_001.jpg",
+    dealImage: "https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=800&h=600&fit=crop&q=80",
     dealDescription: "Pixel 10 Pro 1TB. Tensor G5, Best AI Phone, 7 Years Updates, Magic Editor Pro.",
     dealContent: `
     <p>Pure Android + Gemini Nano. Best computational photography.</p>
@@ -166,7 +164,7 @@ const DEALS = [
   {
     dealName: "Google Pixel 10 Pro Fold 1TB - Porcelain",
     slug: "pixel-10-pro-fold-1tb",
-    dealImage: "https://fdn.gsmarena.com/imgroot/reviews/26/google-pixel-10-pro-fold/lifestyle/-1024w2/gsmarena_001.jpg",
+    dealImage: "https://images.unsplash.com/photo-1587749082291-651a3f2dc3bb?w=800&h=600&fit=crop&q=80",
     dealDescription: "Pixel 10 Pro Fold 1TB. 8.2-inch display, Tensor G5, Best AI for foldables.",
     dealContent: `
     <p>Fold for productivity. Unfold for AI. Translate, edit, multitask.</p>
@@ -190,7 +188,7 @@ const DEALS = [
   {
     dealName: "Lenovo Legion 9i 2026 i9 RTX 5090",
     slug: "legion-9i-2026-rtx5090",
-    dealImage: "https://p1-ofp.static.pub/fes/cms/2026/01/15/legion9i-gallery-01.jpg",
+    dealImage: "https://images.unsplash.com/photo-1603302576837-37561b2e2302?w=800&h=600&fit=crop&q=80",
     dealDescription: "Legion 9i 2026. i9-14980HX, RTX 5090 24GB, Liquid Cooling, 3.2K 165Hz Mini-LED.",
     dealContent: `
     <p>World's first self-contained liquid cooling in a laptop. Creator + Gamer beast.</p>
@@ -213,7 +211,7 @@ const DEALS = [
   {
     dealName: "ASUS ROG Zephyrus G18 2026 RTX 5090",
     slug: "asus-rog-g18-2026",
-    dealImage: "https://dlcdnwebimgs.asus.com/files/media/8C2C3D4E-5F6A-7B8C-9D0E-1F2A3B4C5D6E.jpg",
+    dealImage: "https://images.unsplash.com/photo-1593642702821-c8da6771f0c5?w=800&h=600&fit=crop&q=80",
     dealDescription: "ROG Zephyrus G18 2026. Ryzen 9 9955HX, RTX 5090, 18-inch Nebula HDR 240Hz.",
     dealContent: `
     <p>Thinnest 18-inch gaming laptop. MUX switch + 240W charging.</p>
@@ -236,7 +234,7 @@ const DEALS = [
   {
     dealName: "Alienware m18 R3 i9 RTX 5090",
     slug: "alienware-m18-r3",
-    dealImage: "https://i.dell.com/is/image/DellContent/content/dam/ss2/product-images/dell-client-products/notebooks/alienware-notebooks/alienware-m18-r3/media-gallery/aw-m18-r3-gallery-1.psd",
+    dealImage: "https://images.unsplash.com/photo-1588872657576-7efd1f1555ed?w=800&h=600&fit=crop&q=80",
     dealDescription: "Alienware m18 R3. i9-14980HX, RTX 5090, 18-inch QHD+ 165Hz. Fully upgradeable.",
     dealContent: `
     <p>Desktop replacement with Cryo-tech cooling. RGB everything.</p>
@@ -261,7 +259,7 @@ const DEALS = [
   {
     dealName: "Lexus LX 600 F-Sport 2026 - Black",
     slug: "lexus-lx600-fsport-2026",
-    dealImage: "https://www.lexus.com/content/dam/lexus/2026/lx/trim/fsport/gallery/exterior/01.jpg",
+    dealImage: "https://images.unsplash.com/photo-1603584173870-7f23fdae1b7a?w=800&h=600&fit=crop&q=80",
     dealDescription: "2026 Lexus LX 600 F-Sport. 3.5L V6 Twin Turbo, 409HP, Luxury + Offroad. Brand New.",
     dealContent: `
     <p>The most reliable luxury SUV. Mark Levinson audio + 4-zone climate.</p>
@@ -283,7 +281,7 @@ const DEALS = [
   {
     dealName: "Cadillac Escalade V 2026 - White",
     slug: "cadillac-escalade-v-2026",
-    dealImage: "https://www.cadillac.com/content/dam/cadillac/na/us/en/vehicles/2026/escalade/gallery/01-images/2026-escalade-v-exterior-01.jpg",
+    dealImage: "https://images.unsplash.com/photo-1549399542-7e3f8b79c341?w=800&h=600&fit=crop&q=80",
     dealDescription: "2026 Cadillac Escalade V. 6.2L Supercharged V8 682HP. AKG 36 Speaker. Brand New.",
     dealContent: `
     <p>American luxury + Supercharged power. 38-inch OLED display inside.</p>
@@ -305,7 +303,7 @@ const DEALS = [
   {
     dealName: "Mercedes-Benz GLE 63 S AMG 2026 - Grey",
     slug: "mercedes-gle63s-2026",
-    dealImage: "https://www.mercedes-benz.com/content/dam/brandhub/assets/mbpassion/stories/gle63s/2026/mercedes-benz-gle-63-s-amg-v167-exterior-3400x1440.jpg",
+    dealImage: "https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?w=800&h=600&fit=crop&q=80",
     dealDescription: "2026 Mercedes GLE 63 S AMG. 4.0L V8 Biturbo 603HP + EQ Boost. Burmester 3D.",
     dealContent: `
     <p>Performance SUV. 0-100 in 3.8s. AMG Ride Control+ suspension.</p>
@@ -323,7 +321,6 @@ const DEALS = [
     date: "2026-08-27",
     DATE: [{ date: "2026-08-27" }],
     CTA: 'Deal'
-
   }
 ]
 

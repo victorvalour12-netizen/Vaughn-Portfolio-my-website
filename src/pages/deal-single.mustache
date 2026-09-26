@@ -1,37 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
-  <!-- Primary Meta Tags -->
-  <title> Deals by Vaughn | {{TITLE}} </title>
-  <meta name="title" content="{{TITLE}} | Vaughn Deals">
-  <meta name="description" content="{{DEAL.dealContent}}">
-  <meta name="keywords" content="{{DEAL.category}}, deal, {{DEAL.dealName}}">
-  <meta name="author" content="Valour">
-  <link rel="canonical" href="https://{{BASE_URL}}/deals/{{DEAL.slug}}">
-
-<head>
-  <title>{{TITLE}} - Valour Deals</title>
-  
-  <!-- OG for WhatsApp/Facebook -->
-  <meta property="og:type" content="product">
-  <meta property="og:url" content="{{BASE_URL}}/deals/{{DEAL.slug}}">
-  <meta property="og:title" content="{{DEAL.dealName}} - ₦{{DEAL.price}}">
-  <meta property="og:description" content="{{DEAL.description}}">
-  <meta property="og:image" content="{{BASE_URL}}{{DEAL.dealImage}}">
-
-  <!-- Twitter -->
-  <meta property="twitter:card" content="summary_large_image">
-  <meta property="twitter:title" content="{{TITLE}}">
-  <meta property="twitter:description" content="{{DEAL.description}}">
-  <meta property="twitter:image" content="{{BASE_URL}}{{DEAL.dealImage}}">
-</head>
-
-  <link rel="stylesheet" href="/styles.css">
-</head>
-<body>
+{{> partials/head}}
 
 {{> partials/nav}}
 

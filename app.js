@@ -2,11 +2,8 @@ require('dotenv').config();
 const express = require('express');
 const app = express();
 const path = require('path');
-
-
-
-
 const mustacheExpress = require('mustache-express');
+
 const SKILLS = require('./src/skills');
 const PROJECTS = require('./projects');
 const DEALS = require('./src/deals');
@@ -14,444 +11,331 @@ const COURSES = require('./src/courses');
 const BLOGS = require('./src/blogs');
 const UL = require('./src/ul');
 
-
+const port = process.env.PORT || 3000;
+const BASE_URL = process.env.BASE_URL || `http://localhost:${port}`;
 
 app.use(express.static(path.join(__dirname, "src", "public")));
-
 app.set('views', path.join(__dirname, 'src', 'pages'));
 app.set('view engine', 'mustache');
 app.engine('mustache', mustacheExpress());
 
-
-
-app.get('/', (req, res) => {
-    const nav = UL.map(item => ({
-        ...item,
-        isActive: item.key === "home"
-    }))
-
-    const data = { SKILLS: SKILLS, UL: nav, HOME: true, BASE_URL: BASE_URL }
-
-    if (req.headers['hx-request']) {
-        return res.render('partials/home', data)
-    }
-
-    res.render('index', data)
-});
-
-
-app.get('/projects', (req, res) => {
-    const nav = UL.map(item => ({
-        ...item,
-        isActive: item.key === "projects"
-    }))
-
-    const categorySlug = (req.query.category || 'starter').toLowerCase().trim();
-
-    const PROJECT_CATEGORIES = [
-        { name: 'Projects', slug: 'starter', icon: '🚀' },
-        { name: 'Completed Projects', slug: 'completed', icon: '✅' }
-    ];
-
-    const CATS_UI = PROJECT_CATEGORIES.map(cat => ({
-        ...cat,
-        activeClass: cat.slug === categorySlug ? 'active' : ''
-    }));
-
-    // Filter
-    let filtered = PROJECTS;
-    if (categorySlug !== 'all') {
-        filtered = PROJECTS.filter(p => (p.type || 'starter') === categorySlug);
-    }
-
-    // Add WhatsApp + Share like blogs/deals
-    const projectsWithLinks = filtered.map(proj => {
-        const projectUrl = `${BASE_URL}/projects/${proj.slug}`;
-        const isCompleted = (proj.type || 'starter') === 'completed';
-        
-        let message;
-        if (isCompleted) {
-            message = `Hi Valour, I saw your completed project:\n*${proj.projectName}*\nLink: ${projectUrl}\nLive: ${proj.liveLink || projectUrl}\n\nCan you build something similar for me?`;
-        } else {
-            message = `Hi Valour, I would like to start this project:\n*${proj.projectName}*\nPrice: ₦${proj.price || 'Ask'}\nLink: ${projectUrl}\nImage: ${BASE_URL}${proj.projectImage}\n\nLet's discuss?`;
-        }
-
-        return {
-            ...proj,
-            IS_COMPLETED: isCompleted,
-            IS_STARTER: !isCompleted,
-            BUY_WHATSAPP_MESSAGE: encodeURIComponent(message),
-            SHARE_URL: projectUrl,
-            SHARE_WHATSAPP: `https://wa.me/?text=${encodeURIComponent(`Check this project: ${proj.projectName} - ${projectUrl}`)}`
-        }
-    });
-
-    const data = { 
-        PROJECTS: projectsWithLinks, 
-        PROJECT_CATEGORIES: CATS_UI,
-        UL: nav, 
-        PROJECTSPAGE: true, 
-        BASE_URL: BASE_URL,
-        currentProjectCategory: categorySlug
-    }
-
-    if (req.headers['hx-request']) {
-        return res.render('partials/projects', data)
-    }
-
-    res.render('index', data)
-});
-
-
-app.get('/projects/:slug', (req, res) => {
-    const slug = req.params.slug;
-    const matchedProject = PROJECTS.find(project => project.slug.toString() === slug);
-
-    const related = PROJECTS.filter(p =>
-        p.category === matchedProject.category && p.slug.toString() !== slug
-    ).slice(0, 3)
-
-    const BASE_URL = process.env.BASE_URL || 'http://localhost:3000'
-
-    res.render('project-single', {
-        PROJECT: matchedProject,
-        TITLE: matchedProject.projectName,
-        RELATED: related,
-        BASE_URL: BASE_URL
-    });
-})
-
-
-// DEALS LIST PAGE
-
-const LIMIT = 10;
-
-app.get('/deals', (req, res) => {
-    const nav = UL.map(item => ({
-        ...item,
-        isActive: item.key === "deals"
-    }))
-
-    const ALL_CATEGORIES = [
-        { name: 'All', slug: 'all', icon: '🔥' },
-        { name: 'Cars', slug: 'cars', icon: '🚗' },
-        { name: 'Laptops', slug: 'laptops', icon: '💻' },
-        { name: 'Phones', slug: 'phones', icon: '📱' },
-        { name: 'Gaming', slug: 'gaming', icon: '🎮' },
-    ];
-
-    const categorySlug = (req.query.category || 'all').toLowerCase().trim();
-
-    const CATEGORIES = ALL_CATEGORIES.map(cat => {
-        const isActive = cat.slug.toLowerCase() === categorySlug;
-        return {
-            ...cat,
-            active: isActive,
-            activeClass: isActive ? 'active' : ''
-        }
-    });
-
-    // Make filter case-insensitive
-    let filteredDeals = DEALS;
-    if (categorySlug !== 'all') {
-        filteredDeals = DEALS.filter(d =>
-            d.category.toLowerCase().includes(categorySlug) ||
-            d.category.toLowerCase() === categorySlug
-        );
-    }
-
-    const page = parseInt(req.query.page) || 1;
-    const startIndex = (page - 1) * LIMIT;
-    const endIndex = page * LIMIT;
-    let paginatedDeals = filteredDeals.slice(startIndex, endIndex);
-
-    // ADD WHATSAPP MESSAGE - SAME AS SINGLE PAGE
-    paginatedDeals = paginatedDeals.map(deal => {
-        const message = `Hi Valour, I would like to get this item:\n*${deal.dealName}*\nPrice: ₦${deal.price}\nLink: ${BASE_URL}/deals/${deal.slug}\nImage: ${BASE_URL}${deal.dealImage}\n\nIs the deal still available?`;
-        return {
-            ...deal,
-            BUY_WHATSAPP_MESSAGE: encodeURIComponent(message)
-        }
-    });
-
-    const data = {
-        DEALS: paginatedDeals,
-        CATEGORIES: CATEGORIES,
-        UL: nav,
-        DEALSPAGE: true,
-        hasMore: endIndex < filteredDeals.length,
-        nextPage: page + 1,
-        currentCategory: categorySlug,
-        BASE_URL: BASE_URL
-    }
-
-    res.render('index', data)
-});
-
-// NEW API route for infinite scroll JS
-// app.get('/api/deals', (req, res) => {
-//     const categorySlug = req.query.category || 'all';
-//     const page = parseInt(req.query.page) || 1;
-
-//     let filteredDeals = DEALS;
-//     if (categorySlug !== 'all') {
-//         filteredDeals = DEALS.filter(d => d.category === categorySlug);
-//     }
-
-//     const startIndex = (page - 1) * LIMIT;
-//     const endIndex = page * LIMIT;
-
-//     res.json({
-//         DEALS: filteredDeals.slice(startIndex, endIndex),
-//         hasMore: endIndex < filteredDeals.length
-//     });
-// });
-
-// SINGLE DEAL PAGE
-app.get('/deals/:slug', (req, res) => {
-    const slug = req.params.slug;
-    const matchedDeal = DEALS.find(deal => deal.slug.toString() === slug);
-
-    if (!matchedDeal) return res.status(404).send("Deal not found")
-
-    const related = DEALS.filter(r =>
-        r.category === matchedDeal.category && r.slug.toString() !== slug
-    ).slice(0, 3)
-
-    const BASE_URL = process.env.BASE_URL || 'http://localhost:3000'
-
-    const message = `Hi Valour, I would like to get this item:\n*${matchedDeal.dealName}*\nPrice: ₦${matchedDeal.price}\nLink: ${BASE_URL}/deals/${matchedDeal.slug}\nImage: ${BASE_URL}${matchedDeal.dealImage}\n\nIs the deal still available?`;
-
-    res.render('deal-single', {
-        DEAL: matchedDeal,
-        TITLE: matchedDeal.dealName,
-        RELATED: related,
-        BASE_URL: BASE_URL,
-        BUY_WHATSAPP_MESSAGE: encodeURIComponent(message) // ADD THIS LINE
-    });
-});
-
-
-
-app.get('/courses', (req, res) => {
-    const nav = UL.map(item => ({
-        ...item,
-        isActive: item.key === "courses"
-    }))
-
-    // 1. Define categories with icons
-    const ALL_CATEGORIES = [
-        { name: 'All', slug: 'all', icon: '🔥' },
-        { name: 'Coding', slug: 'Coding', icon: '👨‍💻' },
-        { name: 'Creative', slug: 'Creative', icon: '🎨' },
-        { name: 'Business', slug: 'Business', icon: '💼' }
-    ];
-
-    const categorySlug = req.query.category || 'all';
-
-    // Mark active
-    const CATEGORIES = ALL_CATEGORIES.map(cat => ({
-        ...cat,
-        active: cat.slug === categorySlug
-    }));
-
-    // Filter courses
-    let filteredCourses = COURSES;
-    if (categorySlug !== 'all') {
-        filteredCourses = COURSES.filter(d => d.category === categorySlug);
-    }
-
-    // ADD WHATSAPP MESSAGE TO EACH COURSE
-    filteredCourses = filteredCourses.map(course => {
-        const message = `Hi Valour, I would like to register for this course:\n*${course.courseName}*\nPrice: ₦${course.price}\nLink: ${BASE_URL}/courses/${course.slug}\nImage: ${BASE_URL}${course.courseImage}\n\nWhere do I pay and where's your Location?`;
-        
-        return {
-            ...course,
-            BUY_WHATSAPP_MESSAGE: encodeURIComponent(message)
-        }
-    });
-
-    const data = {
-        COURSES: filteredCourses,
-        CATEGORIES: CATEGORIES,
-        UL: nav,
-        COURSESPAGE: true,
-        BASE_URL: BASE_URL
-    }
-
-    // HTMX partial swap
-    if (req.headers['hx-request']) {
-        return res.render('partials/courses', data)
-    }
-    // Full page load
-    res.render('index', data)
-});
-
-
-
-// SINGLE COURSE PAGE
-app.get('/courses/:slug', (req, res) => {
-    const slug = req.params.slug;
-    const matchedCourse = COURSES.find(course => course.slug.toString() === slug);
-
-    if (!matchedCourse) return res.status(404).send("Course not found")
-
-    const related = COURSES.filter(r =>
-        r.category === matchedCourse.category && r.slug.toString() !== slug
-    ).slice(0, 3)
-
-    const BASE_URL = process.env.BASE_URL || 'http://localhost:3000'
-
-    const message = `Hi Valour, I would like to register for this course:\n*${matchedCourse.courseName}*\nPrice: ₦${matchedCourse.price}\nLink: ${BASE_URL}/deals/${matchedCourse.slug}\nImage: ${BASE_URL}${matchedCourse.courseImage}\n\nWhere do I pay and where's your Loaction?`;
-
-    res.render('course-single', {
-        COURSE: matchedCourse,
-        TITLE: matchedCourse.courseName,
-        RELATED: related,
-        BASE_URL: BASE_URL,
-        BUY_WHATSAPP_MESSAGE: encodeURIComponent(message) // ADD THIS LINE
-    });
-});
-
-
-
-app.get('/blogs', (req, res) => {
-    const nav = UL.map(item => ({
-        ...item,
-        isActive: item.key === "blogs"
-    }))
-
-    const categorySlug = (req.query.category || 'all').toLowerCase().trim();
-
-    const BLOG_CATEGORIES = [
-        { name: 'All', slug: 'all', icon: '📰' },
-        { name: 'Tech News', slug: 'tech', icon: '💻' },
-        { name: 'Billionaire News', slug: 'billionaire', icon: '💰' },
-        { name: 'World News', slug: 'world', icon: '🌍' },
-        { name: 'Church Gist', slug: 'Church Gist', icon: '✝' }
-    ];
-
-    const BLOG_CATS_UI = BLOG_CATEGORIES.map(cat => ({
-        ...cat,
-        activeClass: cat.slug === categorySlug ? 'active' : ''
-    }));
-
-    let filteredBlogs = [...BLOGS];
-    if (categorySlug !== 'all') {
-        filteredBlogs = filteredBlogs.filter(b => {
-            return (b.category || '').toLowerCase().includes(categorySlug);
-        });
-    }
-
-    const sortedBlogs = filteredBlogs.sort((a, b) => new Date(b.date) - new Date(a.date));
-
-    // ADD SHARE LINKS - SAME FORMAT AS DEALS
-    const blogsWithShare = sortedBlogs.map(blog => {
-        const blogUrl = `${BASE_URL}/blogs/${blog.slug}`;
-        const shareText = `Check out this blog: *${blog.blogName}*\n${blog.excerpt}\n\nRead here: ${blogUrl}`;
-
-        return {
-            ...blog,
-            SHARE_URL: blogUrl,
-            SHARE_WHATSAPP: `https://wa.me/?text=${encodeURIComponent(shareText)}`,
-            SHARE_TWITTER: `https://twitter.com/intent/tweet?text=${encodeURIComponent(blog.blogName)}&url=${encodeURIComponent(blogUrl)}`,
-            SHARE_FACEBOOK: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(blogUrl)}`,
-            SHARE_TEXT_ENCODED: encodeURIComponent(shareText)
-        }
-    });
-
-    const data = {
-        BLOGS: blogsWithShare,
-        BLOG_CATEGORIES: BLOG_CATS_UI,
-        UL: nav,
-        BLOGSPAGE: true,
-        BASE_URL: BASE_URL,
-        currentBlogCategory: categorySlug
-    }
-
-    if (req.headers['hx-request']) {
-        return res.render('partials/blogs', data)
-    }
-
-    res.render('index', data)
-});
-
-
-app.get('/blogs/:slug', (req, res) => {
-    const id = req.params.slug;
-    const matchedBlog = BLOGS.find(blog => blog.slug === id);
-
-    const related = BLOGS.filter(b =>
-        b.category === matchedBlog.category && b.slug !== id
-    ).slice(0, 3)
-
-    const matchedPov = BLOGS.find(blog => blog.slug === id);
-
-    const pov = BLOGS.filter(p =>
-        p.pov === matchedPov.pov && p.slug !== id
-    ).slice(0, 3)
-
-    const BASE_URL = process.env.BASE_URL || 'http://localhost:3000'
-
-    res.render('blog-single', {
-        BLOG: matchedBlog,
-        TITLE: matchedBlog.blogName,
-        RELATED: related,
-        POV: pov,
-        BASE_URL: BASE_URL
-    });
-})
-
-
-app.get('/aboutMe', (req, res) => {
-    const nav = UL.map(item => ({
-        ...item,
-        isActive: item.key === "about Me"
-    }))
-
-
-
-    res.render('index', { UL: nav, ABOUTPAGE: true })
-});
-
-app.get('/:contactId', (req, res) => {
-    const id = req.params.contactId;
-
-    const matchedContact = SKILLS.find(skill => skill.contactId.toString() === id);
-
-    const related = SKILLS.filter(s =>
-        s.category === matchedContact.category && s.contactId.toString() !== id
-    ).slice(0, 3)
-
-    const BASE_URL = process.env.BASE_URL || 'http://localhost:3000'
-
-    res.render('contact-single', {
-        CONTACT: matchedContact,
-        TITLE: matchedContact.contactType,
-        RELATED: related,
-        BASE_URL: BASE_URL
-    });
-})
-
-
-
-
-
-const port = process.env.PORT || 3000;
-const BASE_URL = process.env.BASE_URL || `http://localhost:${port}`; // <- ADD THIS
-
-// <- ADD THIS MIDDLEWARE - after app = express()
 app.use((req, res, next) => {
     res.locals.BASE_URL = BASE_URL;
     next();
 });
 
-// ... all your app.get() routes
+
+const ogs = require('open-graph-scraper');
+
+async function getLinkPreview(url) {
+    if (!url) return null;
+    try {
+        const { result } = await ogs({
+            url: url,
+            timeout: 10,
+            headers: { 'user-agent': 'Mozilla/5.0' } // many sites block scraper without this
+        });
+
+        console.log('OG SCRAPED:', url, '->', result.ogTitle); // <-- add this to see in terminal
+
+        return {
+            title: result.ogTitle || result.twitterTitle || '',
+            description: result.ogDescription || result.twitterDescription || '',
+            image: result.ogImage?.[0]?.url || result.twitterImage?.[0]?.url || '',
+            domain: new URL(url).hostname.replace('www.', '')
+        };
+    } catch (e) {
+        console.log('OG FAILED for', url, e.message);
+        return null;
+    }
+}
+
+
+// --- HELPER - MESSAGE + LINK, NO HARDCODE ---
+function getShareMessages(type, url, liveLink = null) {
+    const pageUrl = url;
+    const previewUrl = liveLink || url;
+
+    let shareText = '';
+    let buyText = '';
+
+    if (type === 'projects') {
+        if (liveLink) {
+            shareText = `Check out this project I built 👇\n${previewUrl}\n\nWant something similar?\n${pageUrl}`;
+            buyText = `Hi Valour, I saw your project:\n${pageUrl}\nLive: ${previewUrl}\n\nCan you build something similar for me?`;
+        } else {
+            shareText = `I can build this for you 🚀 Check it out:\n${pageUrl}`;
+            buyText = `Hi Valour, I'm interested in starting this project:\n${pageUrl}\n\nLet's discuss?`;
+        }
+    }
+    if (type === 'deals') {
+        shareText = `Found this hot deal for you 🔥\n${pageUrl}`;
+        buyText = `Hi Valour, I'm interested in this deal:\n${pageUrl}\n\nIs it still available?`;
+    }
+    if (type === 'blogs') {
+        shareText = `You need to read this 📰\n${pageUrl}`;
+        buyText = shareText;
+    }
+    if (type === 'courses') {
+        shareText = `This course is worth it 💡\n${pageUrl}`;
+        buyText = `Hi Valour, I want to register for this course:\n${pageUrl}\n\nWhere do I pay?`;
+    }
+
+    return {
+        SHARE_URL: previewUrl,
+        PAGE_URL: pageUrl,
+        SHARE_TEXT: shareText,
+        SHARE_WHATSAPP: `https://wa.me/?text=${encodeURIComponent(shareText)}`,
+        SHARE_TWITTER: `https://twitter.com/intent/tweet?url=${encodeURIComponent(previewUrl)}&text=${encodeURIComponent(shareText)}`,
+        SHARE_FACEBOOK: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(previewUrl)}`,
+        BUY_WHATSAPP_MESSAGE: encodeURIComponent(buyText)
+    }
+}
+
+// --- SEO HELPER - AUTOMATES HEAD DATA ---
+function getSEO({ title, description, image, url, type = 'website', keywords }) {
+    const cleanDesc = (description || '').toString().replace(/<[^>]*>/g, '').substring(0, 155);
+    return {
+        SEO_TITLE: title,
+        SEO_DESCRIPTION: cleanDesc,
+        SEO_KEYWORDS: keywords,
+        SEO_URL: url,
+        OG_IMAGE: image,
+        OG_TYPE: type
+    }
+}
+
+// HOME
+app.get('/', (req, res) => {
+    const nav = UL.map(item => ({ ...item, isActive: item.key === "home" }))
+    const seo = getSEO({
+        title: 'Vaughn Dev | SEO friendly | Full Stack Web Developer in Lagos',
+        description: 'Vaughn Valour is a Full Stack Web Developer in Lagos building fast, modern, SEO-friendly websites and web apps that rank and convert.',
+        image: `${BASE_URL}/src/og-image.jpg`,
+        url: `${BASE_URL}/`,
+        keywords: 'web developer Lagos, portfolio website, e-commerce website, business website, frontend developer Nigeria, seo friendly web developer'
+    });
+    const data = { SKILLS, UL: nav, HOME: true, BASE_URL, ...seo }
+    if (req.headers['hx-request']) return res.render('partials/home', data)
+    res.render('index', data)
+});
+
+// PROJECTS
+app.get('/projects', async (req, res) => {
+    const nav = UL.map(item => ({ ...item, isActive: item.key === "projects" }))
+    const categorySlug = (req.query.category || 'completed').toLowerCase().trim();
+
+    const PROJECT_CATEGORIES = [
+        { name: 'Completed', slug: 'completed', icon: '✅' },
+
+        { name: 'Start a Project', slug: 'starter', icon: '🚀' }
+    ];
+    const CATS_UI = PROJECT_CATEGORIES.map(cat => ({ ...cat, activeClass: cat.slug === categorySlug ? 'active' : '' }));
+
+    let filtered = PROJECTS;
+    if (categorySlug !== 'all') filtered = PROJECTS.filter(p => (p.type || 'starter') === categorySlug);
+
+    const projectsWithLinks = await Promise.all(filtered.map(async (proj) => {
+        const projectUrl = `${BASE_URL}/projects/${proj.slug}`;
+        const isCompleted = (proj.type || 'starter') === 'completed';
+
+        let og = null;
+        if (isCompleted && proj.liveLink) {
+            og = await getLinkPreview(proj.liveLink);
+        }
+
+        const share = getShareMessages('projects', projectUrl, isCompleted ? proj.liveLink : null);
+
+        let waMessage = isCompleted
+            ? `Hi Valour, I saw your completed project:\n*${proj.projectName}*\nLive: ${proj.liveLink}\n\nCan you build something similar?`
+            : `Hi Valour, I would like to start this project:\n*${proj.projectName}*\nLink: ${projectUrl}\n\nLet's discuss?`;
+
+        // DEBUG - you will see this in terminal
+        console.log(`Project: ${proj.projectName} | isCompleted: ${isCompleted} | OG:`, og?.title);
+
+        return {
+            ...proj,
+            IS_COMPLETED: isCompleted,
+            IS_STARTER: !isCompleted,
+            OG_TITLE: og?.title || proj.projectName,
+            OG_DESC: og?.description || proj.projectDescription,
+            OG_IMAGE: og?.image || proj.projectImage,
+            OG_DOMAIN: og?.domain || (proj.liveLink ? new URL(proj.liveLink).hostname : ''),
+            ...share,
+            BUY_WHATSAPP_MESSAGE: encodeURIComponent(waMessage),
+        }
+    }));
+
+    const seo = getSEO({
+        title: categorySlug === 'completed' ? 'Completed Projects | Vaughn Dev' : 'Starter Projects You Can Launch Today | Vaughn Dev',
+        description: categorySlug === 'completed' ? 'See completed websites built by Vaughn Valour.' : 'Pick a starter template and launch in days.',
+        image: `${BASE_URL}/src/og-image.jpg`,
+        url: `${BASE_URL}/projects?category=${categorySlug}`,
+        keywords: 'web projects Lagos, starter websites'
+    });
+
+    const data = { PROJECTS: projectsWithLinks, PROJECT_CATEGORIES: CATS_UI, UL: nav, PROJECTSPAGE: true, BASE_URL, currentProjectCategory: categorySlug, ...seo }
+
+    if (req.headers['hx-request']) return res.render('partials/projects', data)
+    res.render('index', data)
+});
+
+
+
+app.get('/projects/:slug', (req, res) => {
+    const matchedProject = PROJECTS.find(p => p.slug.toString() === req.params.slug);
+    if (!matchedProject) return res.status(404).send("Not found");
+    const related = PROJECTS.filter(p => p.category === matchedProject.category && p.slug !== matchedProject.slug).slice(0, 3);
+    const projectUrl = `${BASE_URL}/projects/${matchedProject.slug}`;
+    const share = getShareMessages('projects', projectUrl, matchedProject.type === 'completed' ? matchedProject.liveLink : null);
+    const seo = getSEO({
+        title: `${matchedProject.projectName} | Vaughn Dev`,
+        description: matchedProject.projectDescription || matchedProject.description || `Check out ${matchedProject.projectName} built by Vaughn Valour`,
+        image: matchedProject.projectImage ? `${BASE_URL}${matchedProject.projectImage}` : `${BASE_URL}/src/og-image.jpg`,
+        url: projectUrl,
+        type: 'article',
+        keywords: `${matchedProject.projectName}, ${matchedProject.category}, web development Lagos`
+    });
+    res.render('project-single', { PROJECT: matchedProject, TITLE: matchedProject.projectName, RELATED: related, BASE_URL, ...share, ...seo });
+});
+
+// DEALS
+app.get('/deals', (req, res) => {
+    const nav = UL.map(item => ({ ...item, isActive: item.key === "deals" }))
+    const LIMIT = 10;
+    const categorySlug = (req.query.category || 'all').toLowerCase().trim();
+    const ALL_CATEGORIES = [{ name: 'All', slug: 'all', icon: '🔥' }, { name: 'Cars', slug: 'cars', icon: '🚗' }, { name: 'Laptops', slug: 'laptops', icon: '💻' }, { name: 'Phones', slug: 'phones', icon: '📱' }, { name: 'Gaming', slug: 'gaming', icon: '🎮' },];
+    const CATEGORIES = ALL_CATEGORIES.map(cat => ({ ...cat, activeClass: cat.slug === categorySlug ? 'active' : '' }));
+    let filteredDeals = DEALS;
+    if (categorySlug !== 'all') filteredDeals = DEALS.filter(d => d.category.toLowerCase().includes(categorySlug));
+    const page = parseInt(req.query.page) || 1;
+    const paginatedDeals = filteredDeals.slice((page - 1) * LIMIT, page * LIMIT).map(deal => {
+        const url = `${BASE_URL}/deals/${deal.slug}`;
+        const share = getShareMessages('deals', url);
+        return { ...deal, ...share }
+    });
+    const seo = getSEO({
+        title: `${categorySlug === 'all' ? 'Tech' : categorySlug} Deals in Lagos | Vaughn Dev`,
+        description: `Best ${categorySlug} deals in Lagos - phones, laptops, cars, gaming. Verified and affordable.`,
+        image: `${BASE_URL}/src/og-image.jpg`,
+        url: `${BASE_URL}/deals?category=${categorySlug}`,
+        keywords: `${categorySlug} deals Lagos, cheap ${categorySlug}`
+    });
+    res.render('index', { DEALS: paginatedDeals, CATEGORIES, UL: nav, DEALSPAGE: true, hasMore: page * LIMIT < filteredDeals.length, nextPage: page + 1, currentCategory: categorySlug, BASE_URL, ...seo })
+});
+
+app.get('/deals/:slug', (req, res) => {
+    const matchedDeal = DEALS.find(d => d.slug.toString() === req.params.slug);
+    if (!matchedDeal) return res.status(404).send("Deal not found")
+    const url = `${BASE_URL}/deals/${matchedDeal.slug}`;
+    const share = getShareMessages('deals', url);
+    const seo = getSEO({
+        title: `${matchedDeal.dealName} - ₦${matchedDeal.price} | Deals`,
+        description: `${matchedDeal.dealName} for ₦${matchedDeal.price}. ${matchedDeal.description || ''}`,
+        image: matchedDeal.dealImage ? `${BASE_URL}${matchedDeal.dealImage}` : `${BASE_URL}/src/og-image.jpg`,
+        url: url,
+        type: 'product',
+        keywords: `${matchedDeal.dealName}, ${matchedDeal.category}, deals Lagos`
+    });
+    res.render('deal-single', { DEAL: matchedDeal, TITLE: matchedDeal.dealName, RELATED: DEALS.filter(r => r.category === matchedDeal.category && r.slug !== matchedDeal.slug).slice(0, 3), BASE_URL, ...share, ...seo });
+});
+
+// BLOGS
+app.get('/blogs', (req, res) => {
+    const nav = UL.map(item => ({ ...item, isActive: item.key === "blogs" }))
+    const categorySlug = (req.query.category || 'all').toLowerCase().trim();
+    const BLOG_CATEGORIES = [{ name: 'All', slug: 'all', icon: '📰' }, { name: 'Tech News', slug: 'tech', icon: '💻' }, { name: 'Billionaire News', slug: 'billionaire', icon: '💰' }, { name: 'World News', slug: 'world', icon: '🌍' }, { name: 'Church Gist', slug: 'Church Gist', icon: '✝' }];
+    const BLOG_CATS_UI = BLOG_CATEGORIES.map(cat => ({ ...cat, activeClass: cat.slug === categorySlug ? 'active' : '' }));
+    let filteredBlogs = [...BLOGS];
+    if (categorySlug !== 'all') filteredBlogs = filteredBlogs.filter(b => (b.category || '').toLowerCase().includes(categorySlug));
+    const blogsWithShare = filteredBlogs.sort((a, b) => new Date(b.date) - new Date(a.date)).map(blog => {
+        const blogUrl = `${BASE_URL}/blogs/${blog.slug}`;
+        const share = getShareMessages('blogs', blogUrl);
+        return { ...blog, ...share }
+    });
+    const seo = getSEO({
+        title: `Latest ${categorySlug === 'all' ? '' : categorySlug} News | Vaughn Dev Blog`,
+        description: `Latest ${categorySlug} news, tech gist, billionaire news and church gist from Vaughn Valour.`,
+        image: `${BASE_URL}/src/og-image.jpg`,
+        url: `${BASE_URL}/blogs?category=${categorySlug}`,
+        keywords: `${categorySlug} news, blog Lagos`
+    });
+    const data = { BLOGS: blogsWithShare, BLOG_CATEGORIES: BLOG_CATS_UI, UL: nav, BLOGSPAGE: true, BASE_URL, currentBlogCategory: categorySlug, ...seo }
+    if (req.headers['hx-request']) return res.render('partials/blogs', data)
+    res.render('index', data)
+});
+
+app.get('/blogs/:slug', (req, res) => {
+    const matchedBlog = BLOGS.find(b => b.slug === req.params.slug);
+    if (!matchedBlog) return res.status(404).send("Not found");
+    const url = `${BASE_URL}/blogs/${matchedBlog.slug}`;
+    const share = getShareMessages('blogs', url);
+    const seo = getSEO({
+        title: `${matchedBlog.blogName} | Vaughn Blog`,
+        description: matchedBlog.excerpt || matchedBlog.description || matchedBlog.blogName,
+        image: matchedBlog.blogImage ? `${BASE_URL}${matchedBlog.blogImage}` : `${BASE_URL}/src/og-image.jpg`,
+        url: url,
+        type: 'article',
+        keywords: `${matchedBlog.category}, ${matchedBlog.blogName}`
+    });
+    res.render('blog-single', { BLOG: matchedBlog, TITLE: matchedBlog.blogName, RELATED: BLOGS.filter(b => b.category === matchedBlog.category && b.slug !== matchedBlog.slug).slice(0, 3), POV: BLOGS.filter(p => p.pov === matchedBlog.pov && p.slug !== matchedBlog.slug).slice(0, 3), BASE_URL, ...share, ...seo });
+});
+
+// COURSES
+app.get('/courses', (req, res) => {
+    const nav = UL.map(item => ({ ...item, isActive: item.key === "courses" }))
+    const categorySlug = req.query.category || 'all';
+    const ALL_CATEGORIES = [{ name: 'All', slug: 'all', icon: '🔥' }, { name: 'Coding', slug: 'Coding', icon: '👨‍💻' }, { name: 'Creative', slug: 'Creative', icon: '🎨' }, { name: 'Business', slug: 'Business', icon: '💼' }];
+    const CATEGORIES = ALL_CATEGORIES.map(cat => ({ ...cat, active: cat.slug === categorySlug }));
+    let filteredCourses = COURSES;
+    if (categorySlug !== 'all') filteredCourses = COURSES.filter(d => d.category === categorySlug);
+    filteredCourses = filteredCourses.map(c => {
+        const url = `${BASE_URL}/courses/${c.slug}`;
+        const share = getShareMessages('courses', url);
+        return { ...c, ...share }
+    });
+    const seo = getSEO({
+        title: `${categorySlug === 'all' ? 'Tech' : categorySlug} Courses in Lagos | Vaughn Dev`,
+        description: `Learn ${categorySlug} with Vaughn Valour in Lagos. Practical courses that get you jobs.`,
+        image: `${BASE_URL}/src/og-image.jpg`,
+        url: `${BASE_URL}/courses?category=${categorySlug}`,
+        keywords: `${categorySlug} courses Lagos`
+    });
+    const data = { COURSES: filteredCourses, CATEGORIES, UL: nav, COURSESPAGE: true, BASE_URL, ...seo }
+    if (req.headers['hx-request']) return res.render('partials/courses', data)
+    res.render('index', data)
+});
+
+app.get('/courses/:slug', (req, res) => {
+    const slug = req.params.slug;
+    const matchedCourse = COURSES.find(course => course.slug.toString() === slug);
+    if (!matchedCourse) return res.status(404).send("Course not found")
+    const url = `${BASE_URL}/courses/${matchedCourse.slug}`;
+    const share = getShareMessages('courses', url);
+    const seo = getSEO({
+        title: `${matchedCourse.courseName} | Courses`,
+        description: `${matchedCourse.courseName} - ₦${matchedCourse.price}. ${matchedCourse.description || ''}`,
+        image: matchedCourse.courseImage ? `${BASE_URL}${matchedCourse.courseImage}` : `${BASE_URL}/src/og-image.jpg`,
+        url: url,
+        type: 'product',
+        keywords: `${matchedCourse.courseName}, courses Lagos`
+    });
+    res.render('course-single', { COURSE: matchedCourse, TITLE: matchedCourse.courseName, RELATED: COURSES.filter(r => r.category === matchedCourse.category && r.slug !== matchedCourse.slug).slice(0, 3), BASE_URL, ...share, ...seo });
+});
+
+app.get('/aboutMe', (req, res) => {
+    const nav = UL.map(item => ({ ...item, isActive: item.key === "about Me" }))
+    const seo = getSEO({
+        title: 'About Vaughn Valour | Web Developer Lagos',
+        description: 'About Vaughn Valour - Full Stack Developer in Lagos helping businesses build fast websites that convert.',
+        image: `${BASE_URL}/src/og-image.jpg`,
+        url: `${BASE_URL}/aboutMe`,
+        keywords: 'about Vaughn Valour, web developer Lagos'
+    });
+    res.render('index', { UL: nav, ABOUTPAGE: true, ...seo })
+});
 
 module.exports = app;
-
 if (require.main === module) {
-    app.listen(port, () => { // <- use port variable, not process.env.PORT again
-        console.log(`running on ${BASE_URL}`);
-    });
+    app.listen(port, () => console.log(`running on ${BASE_URL}`));
 }

@@ -57,38 +57,34 @@
     {{/PROJECT_CATEGORIES}}
   </div>
 
-  <div class="projects-grid" id="projects-container">
-    {{#PROJECTS}}
-    <div class="project-card">
-      <img src="{{projectImage}}">
-      <div class="project-content">
+  <div class="projects-page-grid" id="projects-container">
+  {{#PROJECTS}}
+    {{#IS_STARTER}}
+    <div class="project-page-card paginated-item">
+      <img src="{{projectImage}}" alt="{{projectName}}" class="project-page-img" loading="lazy">
+      <div class="project-page-content">
         <h3>{{projectName}}</h3>
-        <div class="tags">
-          {{#TOOL}}<span class="tag">{{name}}</span>{{/TOOL}}
-        </div>
-        <p>{{projectDescription}}</p>
-        
-        <!-- STARTER TEMPLATE CARD -->
-        {{#IS_STARTER}}
-          <a href="https://wa.me/2349056611890?text={{BUY_WHATSAPP_MESSAGE}}" target="_blank" class="view-project">Start Project →</a>
-        {{/IS_STARTER}}
-
-        <!-- COMPLETED CARD - FACEBOOK LINK STYLE -->
-        {{#IS_COMPLETED}}
-          <div style="border:1px solid var(--border); border-radius:8px; padding:10px; margin:10px 0; background: var(--bg-secondary);">
-            <small style="color: var(--text-muted);">{{liveLink}}</small>
-            <p style="margin:5px 0; font-weight:bold;">{{projectName}} - Live Preview</p>
-          </div>
-          <div style="display:flex; gap:10px;">
-            <a href="{{liveLink}}" target="_blank" class="view-project">Visit Live →</a>
-            <a href="https://wa.me/2349056611890?text={{BUY_WHATSAPP_MESSAGE}}" target="_blank" class="view-project" style="background:transparent;">Build Similar</a>
-          </div>
-        {{/IS_COMPLETED}}
-
+        <p class="project-page-desc">{{projectDescription}}</p>
+        <a href="/projects/{{slug}}" class="view-project" hx-target="#main-content" hx-push-url="true">Start Project →</a>
       </div>
     </div>
-    {{/PROJECTS}}
-  </div>
+    {{/IS_STARTER}}
+
+    {{#IS_COMPLETED}}
+    <div class="project-page-card paginated-item">
+      <img src="{{OG_IMAGE}}" alt="{{OG_TITLE}}" class="project-page-img" loading="lazy" onerror="this.src='{{projectImage}}'">
+      <div class="project-page-content">
+        <small style="color:var(--text-muted); font-size:11px; text-transform:uppercase;">{{OG_DOMAIN}}</small>
+        <h4 style="margin:6px 0;">{{OG_TITLE}}</h4>
+        <p class="project-page-desc" style="font-size:12px;">{{OG_DESC}}</p>
+        <a href="{{liveLink}}" target="_blank" class="view-project">Visit Live →</a>
+      </div>
+    </div>
+    {{/IS_COMPLETED}}
+  {{/PROJECTS}}
+</div>
+
+
 </section>
 
 {{> partials/find}}
@@ -97,7 +93,8 @@
 
 
 
-    {{#DEALSPAGE}}     {{> partials/menu}}
+    {{#DEALSPAGE}}     
+    {{> partials/menu}}
 
 <section id="deals" class="page">
   <h2 id="view">All Deals</h2>
@@ -111,38 +108,27 @@
     {{/CATEGORIES}}
   </div>
 
-  <div id="deals-content">
-    <div class="projects-grid" id="deals-container">
+<div id="deals-content">
+    <div class="deals-grid" id="deals-container">
       {{#DEALS}}
-      <div class="project-card">
-        <img src="{{dealImage}}" alt="{{dealName}}" loading="lazy">
-        <div class="project-content">
+      <div class="deal-card">
+        <img src="{{dealImage}}" alt="{{dealName}}" loading="lazy" class="deal-img">
+        <div class="deal-content">
           <h3>{{dealName}}</h3>
-          <div class="tags">
-            {{#TOOL}}
-            <span class="tag">{{name}}</span>
-            {{/TOOL}}
-          </div>
-          <p>₦{{price}}</p>
-          <p>{{dealDescription}}</p>
+          <p class="deal-price">₦{{price}}</p>
+          <p class="deal-desc">{{dealDescription}}</p>
           
-          <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; margin-top:16px; flex-wrap:wrap;">
-  <a href="/deals/{{slug}}" class="view-project">View Deal →</a>
-
-  <a 
-    href="https://wa.me/2349056611890?text={{BUY_WHATSAPP_MESSAGE}}" 
-    target="_blank" 
-    class="btn-whatsapp"
-    style="display:inline-flex; align-items:center; gap:8px; padding:12px 20px; background:#25D366; color:white; border-radius:8px; text-decoration:none; font-weight:600; font-size:16px;"
-  >
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.894 11.892-1.99-.001-3.959-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 4.315 1.731 6.086l.235.36-1.116 4.122 4.222-1.105z"/></svg>
-    {{CTA}} on WhatsApp
-  </a>
-</div>
-
+          <div class="deal-actions">
+            <a href="/deals/{{slug}}" class="view-deal">View Deal →</a>
+            <a href="https://wa.me/2349056611890?text={{BUY_WHATSAPP_MESSAGE}}" target="_blank" class="btn-whatsapp-deal">
+              {{CTA}}
+            </a>
+          </div>
         </div>
       </div>
       {{/DEALS}}
+    </div>
+</div>
     </div>
 
     {{^DEALS}}
@@ -153,83 +139,6 @@
 
 {{> partials/find}}
     {{/DEALSPAGE}}
-
-    <script>
-      let currentPage = 1;
-      let loading = false;
-      let hasMore = {{ hasMore }};
-      let currentCategory = "{{currentCategory}}";
-
-      const container = document.getElementById('deals-container');
-      const loader = document.getElementById('loader');
-      const endMessage = document.getElementById('end-message');
-
-      function renderDeal(deal) {
-        let tools = '';
-        if (deal.TOOL) {
-          tools = deal.TOOL.map(t => `<span class="tag">${t.name}</span>`).join('');
-        }
-        return `
-    <div class="project-card">
-      <img src="${deal.dealImage}" alt="${deal.dealName}" loading="lazy">
-      <div class="project-content">
-        <h3>${deal.dealName}</h3>
-        <div class="tags">${tools}</div>
-        <p>₦${Number(deal.price).toLocaleString()}</p>
-        <p>${deal.dealDescription}</p>
-        <a href="/deals/${deal.slug}" class="view-project">View Deal →</a>
-      </div>
-    </div>
-  `;
-      }
-
-      async function loadDeals() {
-        if (loading || !hasMore) return;
-        loading = true;
-        loader.style.display = 'block';
-
-        try {
-          const res = await fetch(`/api/deals?page=${currentPage + 1}&category=${currentCategory}`);
-          const data = await res.json();
-
-          data.DEALS.forEach(deal => {
-            container.insertAdjacentHTML('beforeend', renderDeal(deal));
-          });
-
-          hasMore = data.hasMore;
-          currentPage++;
-
-          if (!hasMore) {
-            loader.style.display = 'none';
-            endMessage.style.display = 'block';
-            window.removeEventListener('scroll', handleScroll);
-          }
-        } catch (err) {
-          console.error(err);
-        }
-
-        loading = false;
-        loader.style.display = 'none';
-      }
-
-      function handleScroll() {
-        const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
-        if (scrollTop + clientHeight >= scrollHeight - 300) {
-          loadDeals();
-        }
-      }
-
-      // Reset when category changes via HTMX
-      document.body.addEventListener('htmx:afterSwap', function (evt) {
-        if (evt.detail.target.id === "deals-content") {
-          currentPage = 1;
-          hasMore = true;
-          window.addEventListener('scroll', handleScroll);
-        }
-      });
-
-      window.addEventListener('scroll', handleScroll);
-    </script>
 
 
     {{#COURSESPAGE}}
@@ -248,38 +157,36 @@
         {{/CATEGORIES}}
       </div>
 
-      <div class="projects-grid" id="deals-container">
-        {{#COURSES}}
-        <div class="project-card">
-          <img src="{{courseImage}}" alt="{{courseName}}">
-          <div class="project-content">
-            <h3>{{courseName}}</h3>
-            <div class="tags">
-              <span class="tag">{{duration}}</span>
-              <span class="tag">{{level}}</span>
-              <span class="tag">{{category}}</span>
-            </div>
-            <p>₦{{price}}</p>
-            <p>{{courseDescription}}</p>
-
-            <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; margin-top:16px; flex-wrap:wrap;">
-              <a href="/courses/{{slug}}" class="view-project">View Course →</a>
-
-              <a 
-                href="https://wa.me/2349056611890?text={{BUY_WHATSAPP_MESSAGE}}" 
-                target="_blank" 
-                class="btn-whatsapp"
-                style="display:inline-flex; align-items:center; gap:8px; padding:12px 20px; background:#25D366; color:white; border-radius:8px; text-decoration:none; font-weight:600; font-size:16px;"
-              >
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.894 11.892-1.99-.001-3.959-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 4.315 1.731 6.086l.235.36-1.116 4.122 4.222-1.105z"/></svg>
-                Register on WhatsApp
-              </a>
-            </div>
-
-          </div>
-        </div>
-        {{/COURSES}}
+<div class="deals-grid" id="deals-container">
+  {{#COURSES}}
+  <div class="deal-card">
+    <img src="{{courseImage}}" alt="{{courseName}}" class="deal-img">
+    <div class="deal-content">
+      <h3>{{courseName}}</h3>
+      <div class="tags">
+        <span class="tag">{{duration}}</span>
+        <span class="tag">{{level}}</span>
+        <span class="tag">{{category}}</span>
       </div>
+      <p class="deal-price">₦{{price}}</p>
+      <p class="deal-desc">{{courseDescription}}</p>
+
+      <div class="deal-actions">
+        <a href="/courses/{{slug}}" class="view-deal">View Course →</a>
+        <a 
+          href="https://wa.me/2349056611890?text={{BUY_WHATSAPP_MESSAGE}}" 
+          target="_blank" 
+          class="btn-whatsapp-deal"
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.894 11.892-1.99-.001-3.959-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 4.315 1.731 6.086l.235.36-1.116 4.122 4.222-1.105z"/></svg>
+          Register
+        </a>
+      </div>
+
+    </div>
+  </div>
+  {{/COURSES}}
+</div>
     </section>
 {{> partials/find}}
 
@@ -295,7 +202,6 @@
   <h2 id="view">My Blogs</h2>
   <p style="color: var(--text-muted);">Read interesting stories and news written by me. [NON_FICTION]</p>
 
-  <!-- CATEGORY FILTER - ADD THIS -->
   <div class="category-filter" style="margin: 20px 0;">
     {{#BLOG_CATEGORIES}}
       <a href="/blogs?category={{slug}}" 
@@ -307,39 +213,39 @@
     {{/BLOG_CATEGORIES}}
   </div>
 
-  <div class="projects-grid" id="projects-container">
+  <div class="blogs-grid" id="projects-container">
     {{#BLOGS}}
-    <div class="project-card">
-  <img src="{{blogImage}}">
-  <div class="project-content">
-    <h3 style="text-transform: uppercase;">{{blogName}}</h3>
-    <div class="tags">
-      <span class="tag">{{date}}</span>
-      <span class="tag" style="text-transform: capitalize;">{{category}}</span>
+    <div class="blog-card">
+      <a href="/blogs/{{slug}}" class="blog-img-wrap">
+        <img src="{{blogImage}}" alt="{{blogName}}" loading="lazy">
+      </a>
+      <div class="blog-content">
+        <div class="blog-meta">
+          <span class="tag">{{date}}</span>
+          <span class="tag" style="text-transform: capitalize;">{{category}}</span>
+        </div>
+        <a href="/blogs/{{slug}}"><h3 class="blog-title">{{blogName}}</h3></a>
+        <p class="blog-excerpt">{{excerpt}}</p>
+        
+        <div class="blog-footer">
+          <a href="/blogs/{{slug}}" class="view-blog">Read More →</a>
+          <div class="share-group">
+            <a href="{{SHARE_WHATSAPP}}" target="_blank" class="share-btn wa" title="WhatsApp">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M19.05 4.91A9.81 9.81 0 0 0 12.04 2C6.54 2 2.07 6.47 2.07 12c0 1.76.46 3.48 1.33 5L2 22l5.16-1.35A9.86 9.86 0 0 0 12.03 22c5.5 0 9.97-4.47 9.97-9.97 0-2.66-1.03-5.16-2.95-7.12ZM12.04 20a7.9 7.9 0 0 1-4.03-1.1l-.29-.17-3.06.8.82-2.98-.19-.31A7.93 7.93 0 0 1 4.07 12c0-4.39 3.57-7.97 7.97-7.97 2.13 0 4.13.83 5.64 2.34 1.51 1.51 2.34 3.51 2.34 5.64 0 4.39-3.57 7.97-7.98 7.97Z"/></svg>
+            </a>
+            <a href="{{SHARE_TWITTER}}" target="_blank" class="share-btn x" title="X">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M18.9 2H22l-6.8 7.8L23 22h-6.2l-4.9-6.4L6.3 22H3.2l7.3-8.3L3 2h6.4l4.4 5.8L18.9 2ZM17.8 19.8h1.7L6.5 4.1H4.6l13.2 15.7Z"/></svg>
+            </a>
+            <a href="{{SHARE_FACEBOOK}}" target="_blank" class="share-btn fb" title="Facebook">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M14 8h3V3h-3c-2.8 0-5 2.2-5 5v3H6v4h3v5h4v-5h3l1-4h-4V8c0-.6.4-1 1-1Z"/></svg>
+            </a>
+            <button onclick="navigator.clipboard.writeText('{{SHARE_URL}}'); this.classList.add('copied'); setTimeout(()=>this.classList.remove('copied'),1500)" class="share-btn link" title="Copy">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
-    <p>{{excerpt}}</p>
-    <div style="display:flex; gap:10px; margin-top:15px; align-items:center;">
-      <div class="blog-footer">
-  <a href="/blogs/{{slug}}" class="view-project">Read More →</a>
-  <div class="share-group">
-    <a href="{{SHARE_WHATSAPP}}" target="_blank" class="share-btn wa" title="WhatsApp">
-      <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M19.05 4.91A9.81 9.81 0 0 0 12.04 2C6.54 2 2.07 6.47 2.07 12c0 1.76.46 3.48 1.33 5L2 22l5.16-1.35A9.86 9.86 0 0 0 12.03 22c5.5 0 9.97-4.47 9.97-9.97 0-2.66-1.03-5.16-2.95-7.12ZM12.04 20a7.9 7.9 0 0 1-4.03-1.1l-.29-.17-3.06.8.82-2.98-.19-.31A7.93 7.93 0 0 1 4.07 12c0-4.39 3.57-7.97 7.97-7.97 2.13 0 4.13.83 5.64 2.34 1.51 1.51 2.34 3.51 2.34 5.64 0 4.39-3.57 7.97-7.98 7.97Z"/></svg>
-    </a>
-    <a href="{{SHARE_TWITTER}}" target="_blank" class="share-btn x" title="X">
-      <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M18.9 2H22l-6.8 7.8L23 22h-6.2l-4.9-6.4L6.3 22H3.2l7.3-8.3L3 2h6.4l4.4 5.8L18.9 2ZM17.8 19.8h1.7L6.5 4.1H4.6l13.2 15.7Z"/></svg>
-    </a>
-    <a href="{{SHARE_FACEBOOK}}" target="_blank" class="share-btn fb" title="Facebook">
-      <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M14 8h3V3h-3c-2.8 0-5 2.2-5 5v3H6v4h3v5h4v-5h3l1-4h-4V8c0-.6.4-1 1-1Z"/></svg>
-    </a>
-    <button onclick="navigator.clipboard.writeText('{{SHARE_URL}}'); this.classList.add('copied'); setTimeout(()=>this.classList.remove('copied'),1500)" class="share-btn link" title="Copy">
-      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-    </button>
-  </div>
-</div>
-    </div>
-  </div>
-</div>
-
     {{/BLOGS}}
 
     {{^BLOGS}}

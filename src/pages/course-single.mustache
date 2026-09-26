@@ -1,36 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
-  <!-- Primary Meta Tags -->
-  <title> Courses by Vaughn | {{TITLE}} </title>
-  <meta name="title" content="{{TITLE}} | Vaughn Courses">
-  <meta name="description" content="{{COURSE.courseContent}}">
-  <meta name="keywords" content="{{COURSE.category}}, course, {{COURSE.courseName}}">
-  <meta name="author" content="Valour">
-  <link rel="canonical" href="https://{{BASE_URL}}/courses/{{COURSE.slug}}">
+{{> partials/head}}
 
-<head>
-  <title>{{TITLE}} - Vaughn Courses</title>
-  
-  <!-- OG for WhatsApp/Facebook -->
-  <meta property="og:type" content="product">
-  <meta property="og:url" content="{{BASE_URL}}/courses/{{COURSE.slug}}">
-  <meta property="og:title" content="{{COURSE.courseName}} - ₦{{COURSE.price}}">
-  <meta property="og:description" content="{{COURSE.description}}">
-  <meta property="og:image" content="{{BASE_URL}}{{COURSE.courseImage}}">
-
-  <!-- Twitter -->
-  <meta property="twitter:card" content="summary_large_image">
-  <meta property="twitter:title" content="{{TITLE}}">
-  <meta property="twitter:description" content="{{COURSE.description}}">
-  <meta property="twitter:image" content="{{BASE_URL}}{{COURSE.courseImage}}">
-</head>
-
-  <link rel="stylesheet" href="/styles.css">
-</head>
 <body>
 
 {{> partials/nav}}

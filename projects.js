@@ -142,7 +142,7 @@ const PROJECTS = [
         projectImage: '/images/mama.jpg',
         projectDescription: 'Restaurant website that increased orders by 300%. Built for Lagos client.',
         type: 'completed', // <--- IMPORTANT
-        liveLink: 'https://mamagoldrestaurant.com', // <--- YOUR LIVE LINK
+        liveLink: 'https://majesticgrace.vercel.app', // <--- YOUR LIVE LINK
         TOOL: [{ name: 'Next.js' }, { name: 'Tailwind' }]
     },
     {
@@ -151,8 +151,14 @@ const PROJECTS = [
         projectImage: '/images/cars.jpg',
         projectDescription: 'Car dealership platform with WhatsApp ordering.',
         type: 'completed',
-        liveLink: 'https://valour-cars.vercel.app',
+        liveLink: 'https://montechsory.vercel.app',
         TOOL: [{ name: 'Node.js' }, { name: 'EJS' }]
+    },
+    {
+        type: 'completed',
+
+        liveLink: 'https://valourdev.vercel.app',
+
     }
 ]
 
