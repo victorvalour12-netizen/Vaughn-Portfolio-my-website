@@ -5,7 +5,7 @@ const path = require('path');
 const mustacheExpress = require('mustache-express');
 
 const SKILLS = require('./src/skills');
-const PROJECTS = require('./projects');
+const PROJECTS = require('./src/projects');
 const DEALS = require('./src/deals');
 const COURSES = require('./src/courses');
 const BLOGS = require('./src/blogs');
