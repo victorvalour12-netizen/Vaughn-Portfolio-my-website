@@ -468,10 +468,12 @@
       grid-template-columns: repeat(1, 1fr);
       gap: 1rem;
       margin-top: 1rem;
+      color: var(--text-muted);
     }
 
     .dream-grid h4 {
       font-weight: 600;
+      font-size: smaller;
     }
 
     .project-nav {
