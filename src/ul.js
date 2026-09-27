@@ -27,7 +27,7 @@ const UL = [
     {
         key: 'blogs',
         id: '/blogs',
-        p: 'Stories'
+        p: 'Blogs'
     },
 
     {
