@@ -57,13 +57,18 @@
     {{/PROJECT_CATEGORIES}}
   </div>
 
-  <div class="projects-page-grid" id="projects-container">
+  <div class="projects-grid" id="projects-container">
   {{#PROJECTS}}
     {{#IS_STARTER}}
-    <div class="project-page-card paginated-item">
+    <div class="project-card">
       <img src="{{projectImage}}" alt="{{projectName}}" class="project-page-img" loading="lazy">
-      <div class="project-page-content">
+      <div class="project-content">
         <h3>{{projectName}}</h3>
+         <div class="tags">
+              {{#TOOL}}
+              <span class="tag">{{name}}</span>
+              {{/TOOL}}
+            </div>
         <p class="project-page-desc">{{projectDescription}}</p>
         <a href="/projects/{{slug}}" class="view-project" hx-target="#main-content" hx-push-url="true">Start Project →</a>
       </div>
@@ -71,9 +76,9 @@
     {{/IS_STARTER}}
 
     {{#IS_COMPLETED}}
-    <div class="project-page-card paginated-item">
+    <div class="project-card paginated-item">
       <img src="{{OG_IMAGE}}" alt="{{OG_TITLE}}" class="project-page-img" loading="lazy" onerror="this.src='{{projectImage}}'">
-      <div class="project-page-content">
+      <div class="project-content">
         <small style="color:var(--text-muted); font-size:11px; text-transform:uppercase;">{{OG_DOMAIN}}</small>
         <h3 style="margin:6px 0;">{{OG_TITLE}}</h3>
         <p class="project-page-desc" style="font-size:12px;">{{OG_DESC}}</p>

@@ -1737,7 +1737,7 @@
   margin-top: auto;
 }
 
-.view-project {
+/* .view-project {
   background: var(--accent);
   color: #0f172a;
   padding: 8px 16px;
@@ -1746,7 +1746,7 @@
   font-size: 0.9rem;
   text-align: center;
   display: inline-block;
-}
+} */
 
 /* CATEGORY FILTER BTNS - if you don't have
 .category-filter {
@@ -1813,10 +1813,10 @@
     flex-direction: column;
   }
 
-  .view-project {
+  /* .view-project {
     font-size: 11px;
     padding: 6px 10px;
     width: 100%;
-  }
+  } */
 }
 
