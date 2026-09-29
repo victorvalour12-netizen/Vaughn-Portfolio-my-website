@@ -320,6 +320,10 @@ app.get('/aboutMe', (req, res) => {
     res.render('index', { UL: nav, ABOUTPAGE: true, ...seo })
 });
 
+app.get('/google177755a7c8cce214.html', (req, res) => {
+    res.send('google-site-verification: google177755a7c8cce214.html');
+});
+
 // --- SITEMAP + ROBOTS --- ADDED
 app.get('/sitemap.xml', (req, res) => {
     res.header('Content-Type', 'application/xml');
