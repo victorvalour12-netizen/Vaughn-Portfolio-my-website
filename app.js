@@ -189,7 +189,7 @@ app.get('/deals', (req, res) => {
     const nav = UL.map(item => ({ ...item, isActive: item.key === "deals" }))
     const LIMIT = 10;
     const categorySlug = (req.query.category || 'all').toLowerCase().trim();
-    const ALL_CATEGORIES = [{ name: 'All', slug: 'all', icon: '🔥' }, { name: 'Cars', slug: 'cars', icon: '🚗' }, { name: 'Laptops', slug: 'laptops', icon: '💻' }, { name: 'Phones', slug: 'phones', icon: '📱' }, { name: 'Gaming', slug: 'gaming', icon: '🎮' },];
+    const ALL_CATEGORIES = [{ name: 'All', slug: 'all', icon: '🔥' }, { name: 'Cars', slug: 'cars', icon: '🚗' }, { name: 'Laptops', slug: 'laptops', icon: '💻' }, { name: 'Phones', slug: 'phones', icon: '📱' }, { name: 'Gaming', slug: 'gaming', icon: '🎮' }, { name: 'Accessories', slug: 'accessories', icon: '📡' },];
     const CATEGORIES = ALL_CATEGORIES.map(cat => ({ ...cat, activeClass: cat.slug === categorySlug ? 'active' : '' }));
     let filteredDeals = DEALS;
     if (categorySlug !== 'all') filteredDeals = DEALS.filter(d => d.category.toLowerCase().includes(categorySlug));

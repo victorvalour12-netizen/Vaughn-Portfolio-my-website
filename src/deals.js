@@ -321,7 +321,140 @@ const DEALS = [
     date: "2026-08-27",
     DATE: [{ date: "2026-08-27" }],
     CTA: 'Deal'
+  },
+  {
+    dealName: "Starlink Mini Portable Kit 2026 - Brand New",
+    slug: "starlink-mini-portable-2026",
+    dealImage: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1200&q=80&fm=jpg&fit=crop",
+    dealDescription: "2026 Starlink Mini Portable. 150Mbps, backpack size, works with power bank. Brand New Sealed.",
+    dealContent: `
+    <p>Official SpaceX Starlink Mini for remote work, travel, farms. No more MTN wahala.</p>
+    <h3>Specs</h3>
+    <ul>
+      <li><b>Speed:</b> Up to 150Mbps down / 20Mbps up</li>
+      <li><b>Weight:</b> 1.1kg with kickstand, laptop size</li>
+      <li><b>Power:</b> Works with 100W power bank for 4hrs</li>
+      <li><b>In Box:</b> Dish, kickstand, adapter, cable + 1 month free</li>
+    </ul>
+    <p><b>Condition:</b> Brand New Sealed. 1 Year Warranty.</p>
+  `,
+    category: "accessories",
+    price: "250,000",
+    date: "2026-09-26",
+    DATE: [{ date: "2026-09-26" }],
+    CTA: 'Deal'
+  },
+  {
+    dealName: "Starlink Standard Gen 3 Kit - WiFi 6 Router",
+    slug: "starlink-standard-gen3-2026",
+    dealImage: "https://images.unsplash.com/photo-1446776653964-20c1d3a81b06?w=1200&q=80&fm=jpg&fit=crop",
+    dealDescription: "2026 Starlink Standard Gen 3. 250Mbps, WiFi 6, covers full house. Best for homes & offices.",
+    dealContent: `
+    <p>Latest Gen 3 with WiFi 6 router. Handles 100+ devices, 300sqm coverage.</p>
+    <h3>Specs</h3>
+    <ul>
+      <li><b>Speed:</b> 200-250Mbps unlimited data</li>
+      <li><b>Router:</b> Gen 3 WiFi 6, 2x2 MIMO</li>
+      <li><b>Coverage:</b> 3-bedroom flat, no dead zones</li>
+      <li><b>Install:</b> Free installation support in Lagos</li>
+    </ul>
+    <p><b>Condition:</b> Brand New Sealed.</p>
+  `,
+    category: "accessories",
+    price: "440,000",
+    date: "2026-09-26",
+    DATE: [{ date: "2026-09-26" }],
+    CTA: 'Deal'
+  },
+  {
+    dealName: "Starlink Mini Business Bundle - Dish + Power Bank + Mesh",
+    slug: "starlink-mini-business-bundle-2026",
+    dealImage: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1200&q=80&fm=jpg&fit=crop",
+    dealDescription: "Business Bundle: Mini + 20000mAh 100W Power Bank + TP-Link WiFi 6 Mesh Router. Work anywhere.",
+    dealContent: `
+    <p>Complete remote-work bundle. No NEPA, no problem.</p>
+    <h3>Bundle Includes</h3>
+    <ul>
+      <li><b>Starlink Mini:</b> 150Mbps portable dish</li>
+      <li><b>Power Bank:</b> 20000mAh 100W PD, powers Mini 4hrs + laptop</li>
+      <li><b>Mesh Router:</b> WiFi 6, full house coverage, 50+ devices</li>
+      <li><b>Free:</b> Ethernet adapter + wall mount</li>
+    </ul>
+    <p><b>Condition:</b> Brand New.</p>
+  `,
+    category: "accessories",
+    price: "380,000",
+    date: "2026-09-26",
+    DATE: [{ date: "2026-09-26" }],
+    CTA: 'Deal'
+  },
+  {
+    dealName: "Starlink Solar Power Station Bundle - 100W + 512Wh",
+    slug: "starlink-solar-power-station-bundle-2026",
+    dealImage: "https://images.unsplash.com/photo-1509391366360-2e959784a276?w=1200&q=80&fm=jpg&fit=crop",
+    dealDescription: "100W foldable solar panel + 512Wh power station. Powers Starlink + laptop all day off-grid.",
+    dealContent: `
+    <p>Best for farms, sites, villages. Charge in 4hrs sun.</p>
+    <h3>Specs</h3>
+    <ul>
+      <li><b>Panel:</b> 100W foldable, waterproof, 23% efficiency</li>
+      <li><b>Station:</b> 512Wh, 500W AC, 100W PD, 2x USB</li>
+      <li><b>Runtime:</b> Starlink Mini 8hrs, Laptop 2 full charges, Phones 10x</li>
+      <li><b>Weight:</b> 6kg total, portable</li>
+    </ul>
+    <p><b>Condition:</b> Brand New. 1 Year Warranty.</p>
+  `,
+    category: "accessories",
+    price: "520,000",
+    date: "2026-09-26",
+    DATE: [{ date: "2026-09-26" }],
+    CTA: 'Deal'
+  },
+  {
+    dealName: "MacBook Air M2 + Starlink Mini - Remote Work Kit",
+    slug: "macbook-air-m2-starlink-kit-2026",
+    dealImage: "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=1200&q=80&fm=jpg&fit=crop",
+    dealDescription: "M2 256GB + Starlink Mini + ANC Headset. Ultimate work-from-anywhere kit.",
+    dealContent: `
+    <p>For CEOs and remote workers. Like new MacBook + brand new Starlink.</p>
+    <h3>Kit Includes</h3>
+    <ul>
+      <li><b>MacBook Air M2:</b> 256GB, 8GB RAM, 13.6\" Liquid Retina</li>
+      <li><b>Starlink Mini:</b> 150Mbps portable internet</li>
+      <li><b>Headset:</b> Bluetooth 5.3 ANC, 40hrs battery, clear mic for Zoom</li>
+      <li><b>Bonus:</b> Laptop stand + wireless mouse</li>
+    </ul>
+    <p><b>Condition:</b> Premium Used / Brand New.</p>
+  `,
+    category: "accessories",
+    price: "1,250,000",
+    date: "2026-09-26",
+    DATE: [{ date: "2026-09-26" }],
+    CTA: 'Deal'
+  },
+  {
+    dealName: "PS5 Disc + Starlink Mini - No Lag Gaming Bundle",
+    slug: "ps5-starlink-gaming-bundle-2026",
+    dealImage: "https://images.unsplash.com/photo-1606144042614-b2417e99c4e3?w=1200&q=80&fm=jpg&fit=crop",
+    dealDescription: "PS5 1TB Disc + Starlink Mini + Ethernet Adapter. <30ms ping, FIFA 26 + 3 Months PS Plus.",
+    dealContent: `
+    <p>Play online in Nigeria without lag. Starlink gives low ping for COD, FIFA, Fortnite.</p>
+    <h3>Bundle Includes</h3>
+    <ul>
+      <li><b>PS5 Disc Edition:</b> 1TB, DualSense controller</li>
+      <li><b>Starlink Mini:</b> For low-latency gaming</li>
+      <li><b>Games:</b> FIFA 26 + Call of Duty + 3 Months PS Plus</li>
+      <li><b>Network:</b> Ethernet adapter for wired 30ms ping</li>
+    </ul>
+    <p><b>Condition:</b> Brand New Sealed.</p>
+  `,
+    category: "accessories",
+    price: "890,000",
+    date: "2026-09-26",
+    DATE: [{ date: "2026-09-26" }],
+    CTA: 'Deal'
   }
+  
 ]
 
 module.exports = DEALS;
