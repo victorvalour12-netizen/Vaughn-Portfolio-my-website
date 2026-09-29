@@ -18,7 +18,7 @@ const DEALS = [
     <p><b>Brand New, Sealed.</b> 1 Year Sony Warranty.</p>
   `,
     category: "Gaming Deals",
-    price: "1800000",
+    price: "1,800,000",
     date: "2026-08-27",
     DATE: [{ date: "2026-08-27" }],
     CTA: 'Buy'
@@ -41,7 +41,7 @@ const DEALS = [
     <p><b>Brand New, Sealed.</b> 1 Year Microsoft Warranty.</p>
   `,
     category: "Gaming Deals",
-    price: "1500000",
+    price: "1,500,000",
     date: "2026-08-27",
     DATE: [{ date: "2026-08-27" }],
     CTA: 'Buy'
@@ -49,10 +49,10 @@ const DEALS = [
 
   // ===== phones =====
   {
-    dealName: "Samsung Galaxy S27 Ultra 1TB - Titanium Black",
-    slug: "samsung-s27-ultra-1tb",
-    dealImage: "https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?w=800&h=600&fit=crop&q=80",
-    dealDescription: "Galaxy S27 Ultra 1TB. Snapdragon 8 Elite Gen 2, 200MP AI Camera, S-Pen, 7 Years Updates.",
+    dealName: "Samsung Galaxy S26 Ultra 1TB - Titanium Black",
+    slug: "samsung-S26-ultra-1tb",
+    dealImage: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR9UcJl6gFuhfSTX6UzRudea5XQGkGfGbHyl4BB3CiOYS3kL6poKSo0blY&s=10",
+    dealDescription: "Galaxy S26 Ultra 1TB. Snapdragon 8 Elite Gen 2, 200MP AI Camera, S-Pen, 7 Years Updates.",
     dealContent: `
     <p>The king of Android 2026. Built-in Galaxy AI and satellite messaging.</p>
     <h3>Specs</h3>
@@ -66,7 +66,7 @@ const DEALS = [
     <p><b>Condition:</b> Brand New, Sealed. 2 Years Warranty.</p>
   `,
     category: "phones",
-    price: "3400000",
+    price: "1,400,000",
     date: "2026-08-27",
     DATE: [{ date: "2026-08-27" }],
     CTA: 'Buy'
@@ -74,7 +74,7 @@ const DEALS = [
   {
     dealName: "Samsung Galaxy Z Flip 8 512GB - Blue",
     slug: "galaxy-z-flip8-512gb",
-    dealImage: "https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=800&h=600&fit=crop&q=80",
+    dealImage: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCWQ2R8HbNumAtEdXEG6ifqffWyWQAVMR10jvihyypkgfgs4PAwX5D-U4&s=10",
     dealDescription: "Galaxy Z Flip 8 512GB. Snapdragon 8 Elite Gen 2. 4.5-inch Cover Screen, Galaxy AI.",
     dealContent: `
     <p>The most pocketable flagship. Now with bigger battery and less crease.</p>
@@ -89,7 +89,7 @@ const DEALS = [
     <p><b>Condition:</b> Brand New, Sealed.</p>
   `,
     category: "phones",
-    price: "2300000",
+    price: "1,300,000",
     date: "2026-08-27",
     DATE: [{ date: "2026-08-27" }],
     CTA: 'Buy'
@@ -97,7 +97,7 @@ const DEALS = [
   {
     dealName: "iPhone 17 Air 512GB - Sky Blue",
     slug: "iphone-17-air-512gb",
-    dealImage: "https://images.unsplash.com/photo-1592899677977-9c10ca588bbd?w=800&h=600&fit=crop&q=80",
+    dealImage: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSp_Dq0h3EcnAph1oGXmfD-2biLz8WQxQOmKi3jpBrmSYMNe3TDfTy3y6g&s=10",
     dealDescription: "iPhone 17 Air 512GB. Thinnest iPhone ever. A19 chip, Apple Intelligence, 48MP.",
     dealContent: `
     <p>Only 5.5mm thin. All-day battery with A19 efficiency.</p>
@@ -112,7 +112,7 @@ const DEALS = [
     <p><b>Condition:</b> Brand New, Sealed. 1 Year Apple Warranty.</p>
   `,
     category: "phones",
-    price: "2100000",
+    price: "1,800,000",
     date: "2026-08-27",
     DATE: [{ date: "2026-08-27" }],
     CTA: 'Buy'
@@ -120,7 +120,7 @@ const DEALS = [
   {
     dealName: "iPhone 17 Pro Max 1TB - Desert Titanium",
     slug: "iphone-17-pro-max-1tb",
-    dealImage: "https://images.unsplash.com/photo-1695822822491-d92af5436e02?w=800&h=600&fit=crop&q=80",
+    dealImage: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSXl_1fOHpAuk2IGpWvYydFeTdtaWpG6es7TMrAOeiy2CDzxYDyJ9201WTK&s=10",
     dealDescription: "iPhone 17 Pro Max 1TB. A19 Pro, 8x Optical Zoom, Apple Intelligence, Titanium.",
     dealContent: `
     <p>Apple's most advanced iPhone. Pro camera system with 8x tetraprism zoom.</p>
@@ -134,7 +134,7 @@ const DEALS = [
     <p><b>Condition:</b> Brand New, Sealed.</p>
   `,
     category: "phones",
-    price: "3500000",
+    price: "3,500,000",
     date: "2026-08-27",
     DATE: [{ date: "2026-08-27" }],
     CTA: 'Buy'
@@ -142,7 +142,7 @@ const DEALS = [
   {
     dealName: "Google Pixel 10 Pro 1TB - Obsidian",
     slug: "pixel-10-pro-1tb",
-    dealImage: "https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=800&h=600&fit=crop&q=80",
+    dealImage: "https://media.wired.com/photos/68aeaf0ccb3116c38839e10b/master/w_2560%2Cc_limit/Google%2520Pixel%252010%2520Series%2520SOURCE%2520Julian%2520Chokkattu.jpg",
     dealDescription: "Pixel 10 Pro 1TB. Tensor G5, Best AI Phone, 7 Years Updates, Magic Editor Pro.",
     dealContent: `
     <p>Pure Android + Gemini Nano. Best computational photography.</p>
@@ -156,7 +156,7 @@ const DEALS = [
     <p><b>Condition:</b> Brand New, Sealed.</p>
   `,
     category: "phones",
-    price: "2800000",
+    price: "1,650,000",
     date: "2026-08-27",
     DATE: [{ date: "2026-08-27" }],
     CTA: 'Buy'
@@ -164,7 +164,7 @@ const DEALS = [
   {
     dealName: "Google Pixel 10 Pro Fold 1TB - Porcelain",
     slug: "pixel-10-pro-fold-1tb",
-    dealImage: "https://images.unsplash.com/photo-1587749082291-651a3f2dc3bb?w=800&h=600&fit=crop&q=80",
+    dealImage: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTsAZLhEsuB4dhhIpYRz9URaJjqdGSH4csmhUBgwU7Hbg&s=10",
     dealDescription: "Pixel 10 Pro Fold 1TB. 8.2-inch display, Tensor G5, Best AI for foldables.",
     dealContent: `
     <p>Fold for productivity. Unfold for AI. Translate, edit, multitask.</p>
@@ -178,7 +178,7 @@ const DEALS = [
     <p><b>Condition:</b> Brand New, Sealed.</p>
   `,
     category: "phones",
-    price: "3400000",
+    price: "1,800,000",
     date: "2026-08-27",
     DATE: [{ date: "2026-08-27" }],
     CTA: 'Buy'
@@ -188,7 +188,7 @@ const DEALS = [
   {
     dealName: "Lenovo Legion 9i 2026 i9 RTX 5090",
     slug: "legion-9i-2026-rtx5090",
-    dealImage: "https://images.unsplash.com/photo-1603302576837-37561b2e2302?w=800&h=600&fit=crop&q=80",
+    dealImage: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSBnYE9-5MB-FktkxHbf6hBmpX1--X4NHXGbFwcLaI5NNOuTjwHaBHkB1E&s=10",
     dealDescription: "Legion 9i 2026. i9-14980HX, RTX 5090 24GB, Liquid Cooling, 3.2K 165Hz Mini-LED.",
     dealContent: `
     <p>World's first self-contained liquid cooling in a laptop. Creator + Gamer beast.</p>
@@ -203,7 +203,7 @@ const DEALS = [
     <p><b>Condition:</b> Brand New, Sealed. 2 Years Warranty.</p>
   `,
     category: "laptops",
-    price: "7800000",
+    price: "4,800,000",
     date: "2026-08-27",
     DATE: [{ date: "2026-08-27" }],
     CTA: 'Buy'
@@ -211,7 +211,7 @@ const DEALS = [
   {
     dealName: "ASUS ROG Zephyrus G18 2026 RTX 5090",
     slug: "asus-rog-g18-2026",
-    dealImage: "https://images.unsplash.com/photo-1593642702821-c8da6771f0c5?w=800&h=600&fit=crop&q=80",
+    dealImage: "https://cdn.mos.cms.futurecdn.net/v2/t:0,l:420,cw:1080,ch:1080,q:80,w:1080/u22kCXQ4sHRuEhvNrHEZaR.jpg",
     dealDescription: "ROG Zephyrus G18 2026. Ryzen 9 9955HX, RTX 5090, 18-inch Nebula HDR 240Hz.",
     dealContent: `
     <p>Thinnest 18-inch gaming laptop. MUX switch + 240W charging.</p>
@@ -226,7 +226,7 @@ const DEALS = [
     <p><b>Condition:</b> Brand New, Sealed.</p>
   `,
     category: "laptops",
-    price: "7200000",
+    price: "3,200,000",
     date: "2026-08-27",
     DATE: [{ date: "2026-08-27" }],
     CTA: 'Buy'
@@ -234,7 +234,7 @@ const DEALS = [
   {
     dealName: "Alienware m18 R3 i9 RTX 5090",
     slug: "alienware-m18-r3",
-    dealImage: "https://images.unsplash.com/photo-1588872657576-7efd1f1555ed?w=800&h=600&fit=crop&q=80",
+    dealImage: "https://images.cnbctv18.com/wp-content/uploads/2023/03/alienware-m18.jpeg?impolicy=website&width=640&height=360",
     dealDescription: "Alienware m18 R3. i9-14980HX, RTX 5090, 18-inch QHD+ 165Hz. Fully upgradeable.",
     dealContent: `
     <p>Desktop replacement with Cryo-tech cooling. RGB everything.</p>
@@ -249,7 +249,7 @@ const DEALS = [
     <p><b>Condition:</b> Brand New, Sealed.</p>
   `,
     category: "laptops",
-    price: "8500000",
+    price: "3,500,000",
     date: "2026-08-27",
     DATE: [{ date: "2026-08-27" }],
     CTA: 'Buy'
@@ -259,7 +259,7 @@ const DEALS = [
   {
     dealName: "Lexus LX 600 F-Sport 2026 - Black",
     slug: "lexus-lx600-fsport-2026",
-    dealImage: "https://images.unsplash.com/photo-1603584173870-7f23fdae1b7a?w=800&h=600&fit=crop&q=80",
+    dealImage: "https://www.nairaland.com/attachments/17403863_img20230703wa0002_jpegef435868b78183201af286a41c6d3862",
     dealDescription: "2026 Lexus LX 600 F-Sport. 3.5L V6 Twin Turbo, 409HP, Luxury + Offroad. Brand New.",
     dealContent: `
     <p>The most reliable luxury SUV. Mark Levinson audio + 4-zone climate.</p>
@@ -273,7 +273,7 @@ const DEALS = [
     <p><b>Condition:</b> Brand New. 4 Years Warranty.</p>
   `,
     category: "cars",
-    price: "380000",
+    price: "380,000,000",
     date: "2026-08-27",
     DATE: [{ date: "2026-08-27" }],
     CTA: 'Deal'
@@ -281,7 +281,7 @@ const DEALS = [
   {
     dealName: "Cadillac Escalade V 2026 - White",
     slug: "cadillac-escalade-v-2026",
-    dealImage: "https://images.unsplash.com/photo-1549399542-7e3f8b79c341?w=800&h=600&fit=crop&q=80",
+    dealImage: "https://dresdenmotors.com/wp-content/uploads/2025/08/1-71.jpg",
     dealDescription: "2026 Cadillac Escalade V. 6.2L Supercharged V8 682HP. AKG 36 Speaker. Brand New.",
     dealContent: `
     <p>American luxury + Supercharged power. 38-inch OLED display inside.</p>
@@ -295,7 +295,7 @@ const DEALS = [
     <p><b>Condition:</b> Brand New.</p>
   `,
     category: "cars",
-    price: "420000",
+    price: "170,000,000",
     date: "2026-08-27",
     DATE: [{ date: "2026-08-27" }],
     CTA: 'Deal'
@@ -303,7 +303,7 @@ const DEALS = [
   {
     dealName: "Mercedes-Benz GLE 63 S AMG 2026 - Grey",
     slug: "mercedes-gle63s-2026",
-    dealImage: "https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?w=800&h=600&fit=crop&q=80",
+    dealImage: "https://machineswithsouls.com/wp-content/uploads/2025/08/mercedes-amg-gle-63s-coupe020.jpg",
     dealDescription: "2026 Mercedes GLE 63 S AMG. 4.0L V8 Biturbo 603HP + EQ Boost. Burmester 3D.",
     dealContent: `
     <p>Performance SUV. 0-100 in 3.8s. AMG Ride Control+ suspension.</p>
@@ -317,7 +317,7 @@ const DEALS = [
     <p><b>Condition:</b> Brand New.</p>
   `,
     category: "cars",
-    price: "450000",
+    price: "175,900,000",
     date: "2026-08-27",
     DATE: [{ date: "2026-08-27" }],
     CTA: 'Deal'
