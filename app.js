@@ -327,44 +327,37 @@ app.get('/google177755a7c8cce214.html', (req, res) => {
 // --- SITEMAP + ROBOTS --- ADDED
 app.get('/sitemap.xml', (req, res) => {
     res.header('Content-Type', 'application/xml');
-    const now = new Date().toISOString().split('T')[0];
+    const now = new Date().toISOString();
+    const base = BASE_URL.replace(/\/$/, ''); // remove trailing /
 
+    const escapeXml = (s) => s
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&apos;');
+
+    // ONLY real pages - no ?category= 
     const staticPages = [
-        { url: '/', priority: '1.0', changefreq: 'daily' },
-        { url: '/projects', priority: '0.9', changefreq: 'daily' },
-        { url: '/deals', priority: '0.9', changefreq: 'daily' },
-        { url: '/blogs', priority: '0.9', changefreq: 'daily' },
-        { url: '/courses', priority: '0.8', changefreq: 'weekly' },
-        { url: '/aboutMe', priority: '0.7', changefreq: 'monthly' },
-        // category pages - important for Google
-        { url: '/deals?category=cars', priority: '0.8', changefreq: 'daily' },
-        { url: '/deals?category=laptops', priority: '0.8', changefreq: 'daily' },
-        { url: '/deals?category=phones', priority: '0.8', changefreq: 'daily' },
-        { url: '/deals?category=gaming', priority: '0.8', changefreq: 'daily' },
-        { url: '/deals?category=accessories', priority: '0.8', changefreq: 'daily' },
-        { url: '/blogs?category=tech', priority: '0.8', changefreq: 'daily' },
-        { url: '/blogs?category=billionaire', priority: '0.8', changefreq: 'daily' },
-        { url: '/blogs?category=world', priority: '0.8', changefreq: 'daily' },
-        { url: '/projects?category=completed', priority: '0.8', changefreq: 'weekly' },
-        { url: '/projects?category=starter', priority: '0.8', changefreq: 'weekly' },
+        '/', '/projects', '/deals', '/blogs', '/courses', '/aboutMe'
     ];
 
     const dynamicPages = [
-        ...DEALS.map(d => ({ url: `/deals/${d.slug}`, priority: '0.8', changefreq: 'weekly', lastmod: d.date || now })),
-        ...BLOGS.map(b => ({ url: `/blogs/${b.slug}`, priority: '0.7', changefreq: 'weekly', lastmod: b.date || now })),
-        ...PROJECTS.map(p => ({ url: `/projects/${p.slug}`, priority: '0.7', changefreq: 'monthly', lastmod: now })),
-        ...COURSES.map(c => ({ url: `/courses/${c.slug}`, priority: '0.6', changefreq: 'monthly', lastmod: now })),
+        ...DEALS.map(d => `/deals/${d.slug}`),
+        ...BLOGS.map(b => `/blogs/${b.slug}`),
+        ...PROJECTS.map(p => `/projects/${p.slug}`),
+        ...COURSES.map(c => `/courses/${c.slug}`),
     ];
 
     const allPages = [...staticPages, ...dynamicPages];
 
     const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${allPages.map(p => ` <url>
-    <loc>${BASE_URL}${p.url}</loc>
-    <lastmod>${p.lastmod || now}</lastmod>
-    <changefreq>${p.changefreq}</changefreq>
-    <priority>${p.priority}</priority>
+${allPages.map(u => `  <url>
+    <loc>${escapeXml(base + u)}</loc>
+    <lastmod>${now}</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>${u === '/' ? '1.0' : '0.8'}</priority>
   </url>`).join('\n')}
 </urlset>`;
 
@@ -373,17 +366,13 @@ ${allPages.map(p => ` <url>
 
 app.get('/robots.txt', (req, res) => {
     res.header('Content-Type', 'text/plain');
-    const robots = `User-agent: *
+    const base = BASE_URL.replace(/\/$/, '');
+    res.send(`User-agent: *
 Allow: /
 
-# Disallow admin/private if you add later
-# Disallow: /admin
-
-Sitemap: ${BASE_URL}/sitemap.xml
-`;
-    res.send(robots);
+Sitemap: ${base}/sitemap.xml
+`);
 });
-
 module.exports = app;
 if (require.main === module) {
     app.listen(port, () => console.log(`running on ${BASE_URL}`));
