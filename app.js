@@ -320,6 +320,66 @@ app.get('/aboutMe', (req, res) => {
     res.render('index', { UL: nav, ABOUTPAGE: true, ...seo })
 });
 
+// --- SITEMAP + ROBOTS --- ADDED
+app.get('/sitemap.xml', (req, res) => {
+    res.header('Content-Type', 'application/xml');
+    const now = new Date().toISOString().split('T')[0];
+
+    const staticPages = [
+        { url: '/', priority: '1.0', changefreq: 'daily' },
+        { url: '/projects', priority: '0.9', changefreq: 'daily' },
+        { url: '/deals', priority: '0.9', changefreq: 'daily' },
+        { url: '/blogs', priority: '0.9', changefreq: 'daily' },
+        { url: '/courses', priority: '0.8', changefreq: 'weekly' },
+        { url: '/aboutMe', priority: '0.7', changefreq: 'monthly' },
+        // category pages - important for Google
+        { url: '/deals?category=cars', priority: '0.8', changefreq: 'daily' },
+        { url: '/deals?category=laptops', priority: '0.8', changefreq: 'daily' },
+        { url: '/deals?category=phones', priority: '0.8', changefreq: 'daily' },
+        { url: '/deals?category=gaming', priority: '0.8', changefreq: 'daily' },
+        { url: '/deals?category=accessories', priority: '0.8', changefreq: 'daily' },
+        { url: '/blogs?category=tech', priority: '0.8', changefreq: 'daily' },
+        { url: '/blogs?category=billionaire', priority: '0.8', changefreq: 'daily' },
+        { url: '/blogs?category=world', priority: '0.8', changefreq: 'daily' },
+        { url: '/projects?category=completed', priority: '0.8', changefreq: 'weekly' },
+        { url: '/projects?category=starter', priority: '0.8', changefreq: 'weekly' },
+    ];
+
+    const dynamicPages = [
+        ...DEALS.map(d => ({ url: `/deals/${d.slug}`, priority: '0.8', changefreq: 'weekly', lastmod: d.date || now })),
+        ...BLOGS.map(b => ({ url: `/blogs/${b.slug}`, priority: '0.7', changefreq: 'weekly', lastmod: b.date || now })),
+        ...PROJECTS.map(p => ({ url: `/projects/${p.slug}`, priority: '0.7', changefreq: 'monthly', lastmod: now })),
+        ...COURSES.map(c => ({ url: `/courses/${c.slug}`, priority: '0.6', changefreq: 'monthly', lastmod: now })),
+    ];
+
+    const allPages = [...staticPages, ...dynamicPages];
+
+    const xml = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${allPages.map(p => ` <url>
+    <loc>${BASE_URL}${p.url}</loc>
+    <lastmod>${p.lastmod || now}</lastmod>
+    <changefreq>${p.changefreq}</changefreq>
+    <priority>${p.priority}</priority>
+  </url>`).join('\n')}
+</urlset>`;
+
+    res.send(xml);
+});
+
+app.get('/robots.txt', (req, res) => {
+    res.header('Content-Type', 'text/plain');
+    const robots = `User-agent: *
+Allow: /
+
+# Disallow admin/private if you add later
+# Disallow: /admin
+
+Sitemap: ${BASE_URL}/sitemap.xml
+`;
+    res.send(robots);
+});
+
 module.exports = app;
 if (require.main === module) {
     app.listen(port, () => console.log(`running on ${BASE_URL}`));
