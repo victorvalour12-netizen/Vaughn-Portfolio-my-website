@@ -1,34 +1,53 @@
-
-
-
-
-
-
 <div class="project-nav" style="margin-top: 75px;">
   <ul class="nav-links scroll-menu">
     {{#UL}}
-    <li><a href="{{id}}" class="nav-links {{#isActive}}active{{/isActive}}"hx-target="#main-content" hx-push-url="true">{{p}}</a></li>
+    <li><a href="{{id}}" class="nav-links {{#isActive}}active{{/isActive}}" hx-target="#main-content" hx-push-url="true">{{p}}</a></li>
     {{/UL}}
   </ul>
 </div>
 
 <script>
 const menu = document.querySelector('.scroll-menu');
-let isDown = false, startX, scrollLeft;
+
+function scrollToActive() {
+  const active = menu.querySelector('.active');
+  if (active) {
+    active.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+  }
+}
+document.addEventListener('DOMContentLoaded', scrollToActive);
+document.body.addEventListener('htmx:afterSettle', scrollToActive);
+scrollToActive();
+
+// --- FIXED DRAG THAT DOESN'T BREAK CLICKS ---
+let isDown = false, startX, scrollLeft, moved = false;
 
 menu.addEventListener('mousedown', (e) => {
   isDown = true;
+  moved = false;
   startX = e.pageX - menu.offsetLeft;
   scrollLeft = menu.scrollLeft;
 });
+
 menu.addEventListener('mouseleave', () => isDown = false);
 menu.addEventListener('mouseup', () => isDown = false);
+
 menu.addEventListener('mousemove', (e) => {
   if(!isDown) return;
-  e.preventDefault();
   const x = e.pageX - menu.offsetLeft;
-  menu.scrollLeft = scrollLeft - (x - startX);
+  const walk = x - startX;
+  if (Math.abs(walk) > 5) moved = true; // only drag if moved >5px
+  if (moved) {
+    menu.scrollLeft = scrollLeft - walk;
+  }
 });
 
+// block click ONLY if it was a drag
+menu.addEventListener('click', (e) => {
+  if (moved) {
+    e.preventDefault();
+    e.stopPropagation();
+    moved = false;
+  }
+}, true);
 </script>
-
