@@ -109,7 +109,7 @@ function getSEO({ title, description, image, url, type = 'website', keywords }) 
 app.get('/', (req, res) => {
     const nav = UL.map(item => ({ ...item, isActive: item.key === "home" }))
     const seo = getSEO({
-        title: 'Vaughn Tech | SEO friendly Web Developer in Lagos',
+        title: 'Vaughn Dev | SEO friendly Web Developer in Lagos',
         description: 'Vaughn Valour is a Full Stack Web Developer in Lagos building fast, modern, SEO-friendly websites and web apps that rank and convert.',
         image: `/images/og-image.jpg`,
         url: `${BASE_URL}/`,
@@ -156,7 +156,7 @@ app.get('/projects', async (req, res) => {
         }
     }));
     const seo = getSEO({
-        title: categorySlug === 'completed' ? 'Completed Projects | Vaughn Tech' : 'Starter Projects You Can Launch Today | Vaughn Tech',
+        title: categorySlug === 'completed' ? 'Completed Projects | Vaughn Dev' : 'Starter Projects You Can Launch Today | Vaughn Dev',
         description: categorySlug === 'completed' ? 'See completed websites built by Vaughn Valour.' : 'Pick a starter template and launch in days.',
         image: `/images/og-image.jpg`,
         url: `${BASE_URL}/projects?category=${categorySlug}`,
@@ -174,7 +174,7 @@ app.get('/projects/:slug', (req, res) => {
     const projectUrl = `${BASE_URL}/projects/${matchedProject.slug}`;
     const share = getShareMessages('projects', projectUrl, matchedProject.type === 'completed' ? matchedProject.liveLink : null);
     const seo = getSEO({
-        title: `${matchedProject.projectName} | Vaughn Tech`,
+        title: `${matchedProject.projectName} | Vaughn Dev`,
         description: matchedProject.projectDescription || matchedProject.description || `Check out ${matchedProject.projectName} built by Vaughn Valour`,
         image: matchedProject.projectImage || `/images/og-image.jpg`,
         url: projectUrl,
@@ -200,7 +200,7 @@ app.get('/deals', (req, res) => {
         return { ...deal, ...share }
     });
     const seo = getSEO({
-        title: `${categorySlug === 'all' ? 'Tech' : categorySlug} Deals in Lagos | Vaughn Tech`,
+        title: `${categorySlug === 'all' ? 'Tech' : categorySlug} Deals in Lagos | Vaughn Dev`,
         description: `Best ${categorySlug} deals in Lagos - phones, laptops, cars, gaming. Verified and affordable.`,
         image: `/images/og-image.jpg`,
         url: `${BASE_URL}/deals?category=${categorySlug}`,
@@ -239,7 +239,7 @@ app.get('/blogs', (req, res) => {
         return { ...blog, ...share }
     });
     const seo = getSEO({
-        title: `Latest ${categorySlug === 'all' ? '' : categorySlug} News | Vaughn Tech Blog`,
+        title: `Latest ${categorySlug === 'all' ? '' : categorySlug} News | Vaughn Dev Blog`,
         description: `Latest ${categorySlug} news, tech gist, billionaire news and church gist from Vaughn Valour.`,
         image: `/images/og-image.jpg`,
         url: `${BASE_URL}/blogs?category=${categorySlug}`,
@@ -280,7 +280,7 @@ app.get('/courses', (req, res) => {
         return { ...c, ...share }
     });
     const seo = getSEO({
-        title: `${categorySlug === 'all' ? 'Tech' : categorySlug} Courses in Lagos | Vaughn Tech`,
+        title: `${categorySlug === 'all' ? 'Tech' : categorySlug} Courses in Lagos | Vaughn Dev`,
         description: `Learn ${categorySlug} with Vaughn Valour in Lagos. Practical courses that get you jobs.`,
         image: `/images/og-image.jpg`,
         url: `${BASE_URL}/courses?category=${categorySlug}`,
