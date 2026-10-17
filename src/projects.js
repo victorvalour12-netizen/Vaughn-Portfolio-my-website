@@ -157,7 +157,13 @@ const PROJECTS = [
     {
         type: 'completed',
 
-        liveLink: 'https://vaughntech.vercel.app',
+        liveLink: 'https://vaughndev.vercel.app',
+
+    },
+        {
+        type: 'completed',
+
+        liveLink: 'https://eko-hotel-by-vaughnvalour.vercel.app',
 
     }
 ]
